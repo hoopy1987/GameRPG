@@ -5,6 +5,7 @@ extends CharacterBody2D
 @export var texture_path: String = "res://assets/generated/char_knight.png"
 @export var max_hp: int = 100
 @export var base_attack_damage: int = 10
+@export var base_defense: int = 0
 @export var attack_range: float = 40.0
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -64,6 +65,10 @@ var level_label: Label
 var xp_bar_bg: NinePatchRect
 var xp_bar_fill: NinePatchRect
 
+# Map & Character UI
+var map_ui: Control = null
+var character_ui: Control = null
+
 func _ready() -> void:
 	current_hp = max_hp
 	attack_damage = base_attack_damage
@@ -71,6 +76,8 @@ func _ready() -> void:
 	setup_weapon_sprite()
 	setup_hp_bar()
 	setup_inventory_ui()
+	setup_map_ui()
+	setup_character_ui()
 	# 启动保护：1秒无敌帧，防止出生即死
 	invincible_timer = 1.0
 
@@ -192,6 +199,18 @@ func setup_inventory_ui() -> void:
 	inventory_ui.player_ref = self
 	add_child(inventory_ui)
 	inventory_ui.visible = false
+
+func setup_map_ui() -> void:
+	map_ui = preload("res://scenes/map_ui.tscn").instantiate()
+	map_ui.player_ref = self
+	add_child(map_ui)
+	map_ui.visible = false
+
+func setup_character_ui() -> void:
+	character_ui = preload("res://scenes/character_ui.tscn").instantiate()
+	character_ui.player_ref = self
+	add_child(character_ui)
+	character_ui.visible = false
 
 func add_gold(amount: int) -> void:
 	gold += amount
@@ -482,6 +501,20 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("respawn") and is_dead:
 		respawn()
+	
+	if event.is_action_pressed("map"):
+		if map_ui and map_ui.has_method("toggle"):
+			map_ui.toggle()
+		# Close character UI if open
+		if character_ui and character_ui.visible:
+			character_ui.hide()
+	
+	if event.is_action_pressed("character"):
+		if character_ui and character_ui.has_method("toggle"):
+			character_ui.toggle()
+		# Close map UI if open
+		if map_ui and map_ui.visible:
+			map_ui.hide()
 	
 	if inventory_open and event.is_action_pressed("interact"):
 		if inventory_ui and inventory_ui.has_method("get_selected_index"):
