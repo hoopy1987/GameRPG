@@ -174,3 +174,18 @@ groups = PackedStringArray("scene_fader")
 
 [node name="GameOverUI" parent="." instance=ExtResource("16_gameover")]
 groups = PackedStringArray("game_over_ui")
+
+[node name="CaveEntrance" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CaveEntrance"]
+position = Vector2(640, 80)
+shape = SubResource("RectangleShape2D_bounds")
+
+[node name="EntranceLabel" type="Label" parent="CaveEntrance"]
+position = Vector2(576, 48)
+text = "↓ 进入矿洞"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="CaveEntrance" to="." method="_on_cave_entrance_body_entered"]

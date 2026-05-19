@@ -57,11 +57,19 @@
 		"stackable": true
 	},
 	{
-		"id": "bat_wing",
-		"name": "蝙蝠翅膀",
+		"id": "gargoyle_stone",
+		"name": "石像鬼之石",
 		"type": "material",
-		"icon": "res://assets/generated/item_bat_wing.png",
-		"desc": "洞穴蝙蝠的皮翼",
+		"icon": "res://assets/generated/item_crest.png",
+		"desc": "石像鬼碎裂后留下的核心碎片，闪烁着诡异的光芒",
 		"stackable": true
+	},
+	{
+		"id": "vein_heart",
+		"name": "矿脉之心",
+		"type": "quest",
+		"icon": "res://assets/generated/item_crest.png",
+		"desc": "散发着温暖光芒的水晶，是矿洞深处最珍贵的矿石",
+		"stackable": false
 	}
 ]

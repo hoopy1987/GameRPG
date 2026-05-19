@@ -38,6 +38,7 @@ func save_game(slot: int) -> bool:
 			"base_attack_damage": player.base_attack_damage,
 			"respawn_position": _vector2_to_array(player.respawn_position)
 		},
+		"current_scene": SceneTransition.get_current_scene_name() if SceneTransition and SceneTransition.has_method("get_current_scene_name") else "world",
 		"enemies_defeated": 0,
 		"quest_progress": {}
 	}
@@ -191,6 +192,21 @@ func load_game(slot: int) -> bool:
 			player.update_equipment_visuals()
 		if "inventory_ui" in player and player.inventory_ui != null and player.inventory_ui.has_method("refresh"):
 			player.inventory_ui.refresh(player.inventory, player.equipment)
+		
+		# 处理场景切换
+		if save_data.has("current_scene"):
+			var saved_scene: String = save_data["current_scene"]
+			var current_scene: String = SceneTransition.get_current_scene_name() if SceneTransition and SceneTransition.has_method("get_current_scene_name") else "world"
+			if saved_scene != current_scene:
+				var scene_path: String = "res://scenes/" + saved_scene + ".tscn"
+				var target_pos: Vector2 = player.global_position
+				if player_data.has("position"):
+					var pos := _array_to_vector2(player_data["position"])
+					if pos != null:
+						target_pos = pos
+				if SceneTransition and SceneTransition.has_method("change_scene"):
+					SceneTransition.change_scene(scene_path, target_pos)
+					return true
 	
 	var quest_mgr = get_tree().get_first_node_in_group("quest_manager") as Node
 	if quest_mgr and save_data.has("quest_progress"):
