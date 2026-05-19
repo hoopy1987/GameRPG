@@ -16,6 +16,9 @@ func _ready() -> void:
 	collision_layer = 1 << 2
 	collision_mask = 0
 	
+	# Add to npc group for test discovery
+	add_to_group("npc")
+	
 	# Dynamically load texture and create sprite frames
 	var tex := load(texture_path) as Texture2D
 	if tex:

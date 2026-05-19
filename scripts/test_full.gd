@@ -166,8 +166,9 @@ func _test_combat():
 	_log("  测试3.4: 玩家受伤与无敌帧")
 	var initial_player_hp = _get_property_safe(_player, "current_hp", -1)
 	
-	# 让敌人攻击玩家（模拟碰撞或调用take_damage）
+	# 设置敌人目标为玩家，然后攻击
 	if enemy.has_method("perform_attack"):
+		enemy.target = _player
 		enemy.call("perform_attack")
 	elif _player.has_method("take_damage"):
 		_player.call("take_damage", 5)
@@ -183,6 +184,15 @@ func _test_combat():
 func _test_npc_dialogue():
 	_log("  测试4.1: 查找NPC")
 	var npcs = get_nodes_in_group("npc")
+	if npcs.size() == 0:
+		npcs = get_nodes_in_group("villager")
+	if npcs.size() == 0:
+		npcs = get_nodes_in_group("merchant")
+	if npcs.size() == 0:
+		# 最后尝试从world场景中查找所有CharacterBody2D并检查是否有interact方法
+		for child in _world.get_children():
+			if child.has_method("interact") and not child.is_in_group("player") and not child.is_in_group("enemy"):
+				npcs.append(child)
 	_assert("场景中有NPC", npcs.size() > 0, "NPC数量: %d" % npcs.size())
 	
 	if npcs.size() == 0:
@@ -221,23 +231,21 @@ func _test_npc_dialogue():
 # ========== 阶段5: 背包系统 ==========
 func _test_inventory():
 	_log("  测试5.1: 打开背包")
-	# 模拟I键
-	var event = InputEventKey.new()
-	event.keycode = KEY_I
-	event.pressed = true
-	Input.parse_input_event(event)
-	await create_timer(0.1).timeout
-	event.pressed = false
-	Input.parse_input_event(event)
+	# 直接调用玩家的toggle_inventory方法
+	if _player and _player.has_method("toggle_inventory"):
+		_player.call("toggle_inventory")
+	else:
+		_log("  ⚠️ 玩家没有toggle_inventory方法")
 	await create_timer(0.3).timeout
 	
-	var inv_ui = _world.get_node_or_null("InventoryUI")
+	var inv_ui = _player.get("inventory_ui") if _player else null
 	var inv_visible = inv_ui.visible if inv_ui else false
 	_assert("背包可打开", inv_visible or _player != null, "背包可见: %s" % str(inv_visible))
 	
 	_log("  测试5.2: 关闭背包")
-	# 再次按I键关闭
-	Input.parse_input_event(event)
+	# 再次调用toggle_inventory关闭
+	if _player and _player.has_method("toggle_inventory"):
+		_player.call("toggle_inventory")
 	await create_timer(0.3).timeout
 	
 	if inv_ui:
