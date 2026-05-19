@@ -211,8 +211,8 @@ func _build_alleys() -> void:
 # Blacksmith: NE quadrant with chimney, forge sign, and interior details
 # ---------------------------------------------------------------------------
 func _build_blacksmith() -> void:
-	var bx := 52
-	var by := 8
+	var bx: int = 52
+	var by: int = 8
 	var bw := 9
 	var bh := 7
 	_build_building(bx, by, bw, bh, WOOD, WALL, ROOF)
@@ -928,7 +928,4 @@ func _add_wall_collision(parent: Node, pos: Vector2, size: Vector2) -> void:
 	body.add_child(shape)
 	parent.add_child(body)
 
-func _on_cave_entrance_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		if SceneTransition and SceneTransition.has_method("change_scene"):
-			SceneTransition.change_scene("res://scenes/cave.tscn", Vector2(960, 160))
+

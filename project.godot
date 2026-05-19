@@ -21,7 +21,6 @@ SoundManager="*res://scripts/sound_manager.gd"
 DataLoader="*res://scripts/data_loader.gd"
 SaveManager="*res://scripts/save_manager.gd"
 SaveUI="*res://scenes/save_ui.tscn"
-SceneTransition="*res://scripts/scene_transition.gd"
 
 [display]
 

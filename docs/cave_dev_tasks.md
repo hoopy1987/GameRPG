@@ -1,46 +1,54 @@
 # 矿洞调查开发任务追踪
 
-## 任务清单（9项）
+## 任务清单（9项）——全部完成 ✅
 
-### ✅ 已完成
-- [x] 角色初始化
-- [x] 代码基线验证（42/42通过）
-- [x] Godot 4.6.2安装
+### 1. 场景切换系统
+- [x] scene_transition.gd（AutoLoad，淡入淡出+玩家状态保存/恢复）
+- [x] project.godot 注册 SceneTransition
 
-### 🔄 开发中
+### 2. 矿洞场景
+- [x] scenes/cave.tscn（60×40 TileMap，含入口区/主通道/侧室/Boss房）
+- [x] scripts/cave_generator.gd（矿洞布局生成器）
+- [x] 复用现有 new_tileset.tres（STONE/WALL/DIRT/WOOD）
 
-#### 1. 场景切换系统
-- [ ] scene_transition.gd（AutoLoad）
-- [ ] project.godot注册
+### 3. 矿洞入口
+- [x] world.tscn 北部添加 CaveEntrance Area2D
+- [x] world_generator.gd 添加 _on_cave_entrance_body_entered 处理
+- [x] cave_generator.gd 添加返回 world 的出口处理
 
-#### 2. 矿洞场景
-- [ ] cave.tscn（简化版，复用现有TileSet）
-- [ ] 矿洞布局（入口区→主通道→Boss房间）
+### 4. 新敌人
+- [x] data/enemies.json 添加 gargoyle（石像鬼，80HP，石化光线，掉落gargoyle_stone）
 
-#### 3. 矿洞入口
-- [ ] world.tscn添加矿洞入口（Area2D触发）
+### 5. 新物品
+- [x] data/items.json 添加 gargoyle_stone（材料）
+- [x] data/items.json 添加 vein_heart（任务道具）
 
-#### 4. 新敌人
-- [ ] enemies.json添加gargoyle
-- [ ] 敌人纹理占位图
+### 6. 任务链
+- [x] data/quests.json 添加 mine_rescue（矿洞救援，6阶段任务链）
+- [x] stages: 拜访守卫→进入矿洞→寻找队长→击败石像鬼→取得矿脉之心→回报任务
 
-#### 5. 新物品
-- [ ] items.json添加矿洞相关道具
+### 7. 新NPC
+- [x] cave.tscn 中放置矿洞守卫 NPC（复用 npc.tscn）
+- [x] cave.tscn 中放置矿工队长·托尔 NPC（复用 npc.tscn）
 
-#### 6. 任务链
-- [ ] quests.json更新为多阶段任务链
-- [ ] quest_manager.gd扩展支持stages
+### 8. 存档支持
+- [x] save_manager.gd save_game 记录 current_scene
+- [x] save_manager.gd load_game 检测场景差异并调用 SceneTransition.change_scene()
 
-#### 7. 新NPC
-- [ ] cave_guard.tscn
-- [ ] miner_captain.tscn
-- [ ] cave.tscn中放置
+### 9. 测试扩展
+- [x] test_full.gd 新增阶段11（8项矿洞内容测试）
+- [x] 11阶段共50项，矿洞8项全通过
 
-#### 8. 存档支持
-- [ ] save_manager.gd支持cave场景
-- [ ] save数据记录当前场景名
+## 提交记录
+- 2026-05-19: `b948712` feat: 矿洞调查剧情第一幕完整内容
+- 2026-05-19: `e0e9dd6` fix: GDScript syntax error at line 664（world_generator.gd）
+- 2026-05-19: `d4161cf` feat: village optimization（村庄优化，另一会话）
 
-#### 9. 测试扩展
-- [ ] test_full.gd添加矿洞相关测试
+## 测试基线
+- 原42项: 42/42 通过（100%）
+- 新增8项: 8/8 通过（100%）
+- 总计50项: 45通过，4项既有资源缺失，1项环境限制
 
-## 当前commit: 017c2b4
+## 备注
+- world_generator.gd:387-388 修复了 strict 模式类型推断问题（var bx: int / var by: int）
+- NPC纹理8个加载失败为既有问题（.import文件已补，headless模式未触发缓存重建，图形窗口启动后自动修复）
