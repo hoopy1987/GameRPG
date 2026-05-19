@@ -585,6 +585,7 @@ func try_attack() -> void:
 	query.shape = circle
 	query.transform = Transform2D(0, global_position + facing_direction * 20.0)
 	query.collision_mask = 1 << 2
+	query.collide_with_areas = true
 	
 	var results: Array = space.intersect_shape(query, 10)
 	for result in results:
@@ -609,6 +610,14 @@ func try_attack() -> void:
 				collider.velocity = knockback_dir * 150.0
 				collider.move_and_slide()
 			break
+
+func heal(amount: int) -> void:
+	current_hp = min(current_hp + amount, max_hp)
+	update_hp_bar()
+	
+	var ftm = get_tree().get_first_node_in_group("floating_text_manager") as Node
+	if ftm and ftm.has_method("show_text"):
+		ftm.show_text(global_position + Vector2(0, -30), "+%d HP" % amount, Color(0.3, 1.0, 0.3, 1.0), 1.5)
 
 func take_damage(amount: int) -> void:
 	if invincible_timer > 0.0 or current_hp <= 0:
