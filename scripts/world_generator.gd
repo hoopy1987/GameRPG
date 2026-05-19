@@ -661,8 +661,8 @@ func _add_investigation_points() -> void:
 	# 5. Well near market — rumor
 	_add_investigation_point(ip_parent, Vector2(46, 19), "水井",
 		["【村民的低语】",
-		""据说矿洞最深处有什么东西在动……"",
-		""别一个人去，带上火把和剑。"",
+		"据说矿洞最深处有什么东西在动……",
+		"别一个人去，带上火把和剑。",
 		"",
 		"—— 两个村民的闲聊"])
 
