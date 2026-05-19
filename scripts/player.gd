@@ -583,10 +583,6 @@ func take_damage(amount: int) -> void:
 	invincible_timer = INVINCIBLE_DURATION
 	update_hp_bar()
 	
-	# Trace
-	if GameTrace and GameTrace.has_method("log_event"):
-		GameTrace.log_event("player_take_damage", {"amount": amount, "hp": current_hp, "max_hp": max_hp})
-	
 	# 受伤音效
 	if SoundManager and SoundManager.has_method("play_sfx"):
 		SoundManager.play_sfx("player_hurt")
@@ -618,10 +614,6 @@ func die() -> void:
 	velocity = Vector2.ZERO
 	print("玩家阵亡！")
 	
-	# Trace
-	if GameTrace and GameTrace.has_method("log_event"):
-		GameTrace.log_event("player_die", {"hp": current_hp, "level": level, "gold": gold, "pos": str(global_position)})
-	
 	# Show Game Over UI instead of direct respawn
 	var game_over = get_tree().get_first_node_in_group("game_over_ui")
 	if game_over and game_over.has_method("show_game_over"):
@@ -641,9 +633,6 @@ func respawn() -> void:
 	velocity = Vector2.ZERO
 	invincible_timer = 1.0
 	
-	# Trace
-	if GameTrace and GameTrace.has_method("log_event"):
-		GameTrace.log_event("player_respawn", {"hp": current_hp, "pos": str(global_position)})
 	sprite.modulate = Color(1, 1, 1, 1)
 	update_hp_bar()
 	

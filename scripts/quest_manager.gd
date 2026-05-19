@@ -54,15 +54,8 @@ func check_completion() -> void:
 	if completed:
 		return
 	
-	# Trace
-	if GameTrace and GameTrace.has_method("log_event"):
-		GameTrace.log_event("quest_check", {"kills": kill_count, "required": required_kills, "talked": talked_to_npc})
-	
 	if kill_count >= required_kills and talked_to_npc:
 		completed = true
-		# Trace
-		if GameTrace and GameTrace.has_method("log_event"):
-			GameTrace.log_event("quest_complete", {"quest_name": quest_name})
 		print("任务完成：%s！" % quest_name)
 		
 		if ToastManager and ToastManager.has_method("show_toast"):

@@ -152,9 +152,6 @@ func attack(delta: float) -> void:
 
 func perform_attack() -> void:
 	if target and target.has_method("take_damage"):
-		# Trace
-		if GameTrace and GameTrace.has_method("log_event"):
-			GameTrace.log_event("enemy_attack", {"damage": attack_damage, "target_pos": str(target.global_position) if target else "none"})
 		target.take_damage(attack_damage)
 		if SoundManager and SoundManager.has_method("play_sfx"):
 			SoundManager.play_sfx("hit_damage")
@@ -175,10 +172,6 @@ func take_damage(amount: int) -> void:
 func die() -> void:
 	is_dying = true
 	velocity = Vector2.ZERO
-	
-	# Trace
-	if GameTrace and GameTrace.has_method("log_event"):
-		GameTrace.log_event("enemy_die", {"type": get_meta("enemy_type", ""), "pos": str(global_position)})
 	
 	# Enemy die sound
 	if SoundManager and SoundManager.has_method("play_sfx"):

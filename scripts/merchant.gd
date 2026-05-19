@@ -35,9 +35,6 @@ func get_shop_ui() -> Control:
 	return shop_ui
 
 func interact() -> void:
-	# Trace
-	if GameTrace and GameTrace.has_method("log_event"):
-		GameTrace.log_event("merchant_interact", {"npc_name": npc_name})
 	if is_merchant and shop_ui:
 		var player = get_tree().get_first_node_in_group("player") as Node2D
 		if player:
