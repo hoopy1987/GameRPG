@@ -13,10 +13,10 @@ var _test_timer: Timer
 
 func _ready():
 	_open_log()
-	_log("=" * 60)
+	_log("=".repeat(60))
 	_log("炭火村传说 - 完整自动化测试")
 	_log("时间: " + Time.get_datetime_string_from_system())
-	_log("=" * 60)
+	_log("=".repeat(60))
 	
 	# 创建测试定时器
 	_test_timer = Timer.new()
@@ -385,9 +385,9 @@ func _test_audio():
 
 # ========== 测试报告输出 ==========
 func _output_final_report():
-	_log("\n" + "=" * 60)
+	_log("\n" + "=".repeat(60))
 	_log("测试完成报告")
-	_log("=" * 60)
+	_log("=".repeat(60))
 	_log("通过: %d" % _tests_passed)
 	_log("失败: %d" % _tests_failed)
 	_log("总计: %d" % (_tests_passed + _tests_failed))
@@ -400,7 +400,7 @@ func _output_final_report():
 	else:
 		_log("\n✅ 所有测试通过！")
 	
-	_log("=" * 60)
+	_log("=".repeat(60))
 	
 	_close_log()
 	
