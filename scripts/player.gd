@@ -80,6 +80,7 @@ func setup_weapon_sprite() -> void:
 
 func setup_hp_bar() -> void:
 	var canvas := CanvasLayer.new()
+	canvas.name = "HPBarCanvas"
 	canvas.layer = 20
 	add_child(canvas)
 	

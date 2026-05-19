@@ -181,7 +181,7 @@ func load_game(slot: int) -> bool:
 				player.respawn_position = rpos
 		
 		player.is_dead = false
-		if player.has("sprite") and player.sprite != null:
+		if "sprite" in player and player.sprite != null:
 			player.sprite.modulate = Color(1, 1, 1, 1)
 		if player.has_method("update_hp_bar"):
 			player.update_hp_bar()
@@ -189,7 +189,7 @@ func load_game(slot: int) -> bool:
 			player.update_level_ui()
 		if player.has_method("update_equipment_visuals"):
 			player.update_equipment_visuals()
-		if player.has("inventory_ui") and player.inventory_ui != null and player.inventory_ui.has_method("refresh"):
+		if "inventory_ui" in player and player.inventory_ui != null and player.inventory_ui.has_method("refresh"):
 			player.inventory_ui.refresh(player.inventory, player.equipment)
 	
 	var quest_mgr = get_tree().get_first_node_in_group("quest_manager") as Node
