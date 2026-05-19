@@ -8,59 +8,52 @@
 		"reward_item_id": "health_potion"
 	},
 	{
-		"id": "mine_rescue",
-		"name": "矿洞救援",
-		"description": "调查矿洞中的失踪矿工，击败深处的怪物，带回矿脉之心。",
+		"id": "ashes_commission",
+		"name": "灰烬委托",
+		"description": "调查村庄北部的洞穴，揭开骑士遗骸的真相。",
 		"stages": [
 			{
-				"id": "拜访守卫",
-				"description": "与矿洞入口的守卫对话，获得进入许可",
+				"id": "拜访长者",
+				"description": "在村庄中心与赤杨长者对话",
 				"type": "npc_talk",
-				"target": "矿洞守卫",
+				"target": "Elder Alder",
 				"completed": false
 			},
 			{
-				"id": "进入矿洞",
-				"description": "进入炭火村北部的矿洞",
+				"id": "进入洞穴",
+				"description": "进入村庄北部的洞穴",
 				"type": "enter_scene",
 				"target": "cave",
 				"completed": false
 			},
 			{
-				"id": "寻找队长",
-				"description": "在矿洞中找到矿工队长·托尔",
-				"type": "npc_talk",
-				"target": "矿工队长·托尔",
-				"completed": false
-			},
-			{
-				"id": "击败石像鬼",
-				"description": "击败矿洞深处的石像鬼",
+				"id": "消灭蜘蛛",
+				"description": "击败3只洞穴蜘蛛",
 				"type": "kill",
-				"target": "gargoyle",
-				"count": 1,
+				"target": "cave_spider",
+				"count": 3,
 				"current": 0,
 				"completed": false
 			},
 			{
-				"id": "取得矿脉之心",
-				"description": "获得矿脉之心",
-				"type": "collect_item",
-				"target": "vein_heart",
+				"id": "调查遗骸",
+				"description": "检查洞穴深处的骑士遗骸",
+				"type": "inspect",
+				"target": "knight_remains",
 				"completed": false
 			},
 			{
 				"id": "回报任务",
-				"description": "向矿工队长·托尔汇报",
+				"description": "向赤杨长者汇报调查结果",
 				"type": "npc_talk",
-				"target": "矿工队长·托尔",
+				"target": "Elder Alder",
 				"completed": false
 			}
 		],
 		"rewards": {
-			"xp": 200,
-			"gold": 100,
-			"item_id": "iron_sword"
+			"xp": 100,
+			"gold": 50,
+			"item_id": "knight_emblem"
 		}
 	}
 ]

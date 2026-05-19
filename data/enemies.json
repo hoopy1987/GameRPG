@@ -51,18 +51,18 @@
 		"drop_chance": 0.5
 	},
 	{
-		"id": "gargoyle",
-		"name": "石像鬼",
-		"max_hp": 80,
-		"speed": 70,
-		"attack_damage": 8,
-		"attack_range": 40,
-		"detection_range": 180,
-		"texture_path": "res://assets/generated/char_enemy.png",
-		"xp_reward": 80,
-		"gold_reward": 20,
-		"special_ability": "petrify",
-		"drop_item_id": "gargoyle_stone",
-		"drop_chance": 0.8
+		"id": "cave_bat",
+		"name": "洞穴蝙蝠",
+		"max_hp": 22,
+		"speed": 140,
+		"attack_damage": 3,
+		"attack_range": 28,
+		"detection_range": 150,
+		"texture_path": "res://assets/generated/cave_bat.png",
+		"xp_reward": 30,
+		"gold_reward": 4,
+		"special_ability": "dive",
+		"drop_item_id": "bat_wing",
+		"drop_chance": 0.5
 	}
 ]

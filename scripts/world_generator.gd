@@ -384,8 +384,8 @@ func _build_stream() -> void:
 			for dy in range(-1, 2):
 				if dx == 0 and dy == 0:
 					continue
-				var bx: int = pt.x + dx
-				var by: int = pt.y + dy
+				var bx := pt.x + dx
+				var by := pt.y + dy
 				if bx >= 0 and bx < VILLAGE_W and by >= 0 and by < VILLAGE_H:
 					var cell := tile_map.get_cell_atlas_coords(Vector2i(bx, by))
 					if cell == GRASS or cell == DIRT or cell == SAND:
