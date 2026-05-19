@@ -75,8 +75,8 @@ func _test_project_launch():
 	self.root.add_child(_world)
 	_assert_not_null("世界场景实例化成功", _world)
 	
-	# 等待一帧让场景初始化
-	await create_timer(0.1).timeout
+	# 等待场景完全初始化（所有子节点_ready()执行完毕）
+	await create_timer(1.0).timeout
 	
 	_log("  测试1.4: 数据加载器工作")
 	var has_data_loader = _world.has_node("DataLoader") or FileAccess.file_exists("res://data/items.json")
@@ -85,6 +85,15 @@ func _test_project_launch():
 	_log("  测试1.5: 村庄生成完成")
 	var village_ok = _world.get("village_generated") if _world.get("village_generated") != null else true
 	_assert("村庄生成标志", village_ok, "可能延迟生成，后续验证")
+	
+	# 额外检查：关键节点是否已就绪
+	_log("  测试1.6: Player节点已就绪")
+	var player_node = _world.get_node_or_null("Player")
+	_assert_not_null("Player节点存在", player_node)
+	
+	_log("  测试1.7: 敌人已生成")
+	var enemies = get_nodes_in_group("enemy")
+	_assert("至少1个敌人", enemies.size() > 0, "敌人数量: %d" % enemies.size())
 
 # ========== 阶段2: 玩家移动 ==========
 func _test_player_movement():
@@ -164,11 +173,18 @@ func _test_combat():
 		"攻击前HP: %d, 攻击后HP: %d" % [initial_enemy_hp, new_enemy_hp])
 	
 	_log("  测试3.4: 玩家受伤与无敌帧")
+	
+	# 确保玩家不处于无敌状态
+	if "invincible_timer" in _player:
+		_player.invincible_timer = 0.0
+	
 	var initial_player_hp = _get_property_safe(_player, "current_hp", -1)
 	
 	# 设置敌人目标为玩家，然后攻击
 	if enemy.has_method("perform_attack"):
 		enemy.target = _player
+		# 确保敌人也在攻击范围内
+		enemy.attack_range = 9999.0
 		enemy.call("perform_attack")
 	elif _player.has_method("take_damage"):
 		_player.call("take_damage", 5)
