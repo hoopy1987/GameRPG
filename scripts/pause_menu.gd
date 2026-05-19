@@ -70,7 +70,7 @@ func _on_load() -> void:
 				push_error("读取存档失败：找不到player节点")
 				return
 			
-			var success := save_mgr.load_game(0)
+			var success: bool = save_mgr.load_game(0)
 			if success:
 				toggle_pause()
 

@@ -59,7 +59,7 @@ func _on_load() -> void:
 		
 		var save_mgr = get_tree().get_first_node_in_group("save_manager") as Node
 		if save_mgr and save_mgr.has_method("load_game"):
-			var success := save_mgr.load_game(0)
+			var success: bool = save_mgr.load_game(0)
 			if not success:
 				push_error("load_game返回失败")
 

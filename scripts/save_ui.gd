@@ -161,7 +161,7 @@ func _on_load_slot(slot: int) -> void:
 	
 	# 调用load_game
 	if SaveManager and SaveManager.has_method("load_game"):
-		var success := SaveManager.load_game(slot)
+		var success: bool = SaveManager.load_game(slot)
 		if not success:
 			push_error("load_game返回失败，槽位: %d" % slot)
 			if ToastManager and ToastManager.has_method("show_toast"):

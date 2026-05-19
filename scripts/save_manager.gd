@@ -216,16 +216,16 @@ func _vector2_to_array(v: Vector2) -> Array:
 func _array_to_vector2(arr) -> Vector2:
 	if arr == null:
 		push_warning("_array_to_vector2: 输入为null")
-		return null
+		return Vector2.ZERO
 	var array := arr as Array
 	if not array or array.size() < 2:
 		push_warning("_array_to_vector2: 无效数组格式 %s" % str(arr))
-		return null
+		return Vector2.ZERO
 	var x = array[0]
 	var y = array[1]
 	if not (x is float or x is int) or not (y is float or y is int):
 		push_warning("_array_to_vector2: 非数字类型 x=%s, y=%s" % [str(x), str(y)])
-		return null
+		return Vector2.ZERO
 	return Vector2(float(x), float(y))
 
 func get_save_info(slot: int) -> Dictionary:
