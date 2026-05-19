@@ -1,0 +1,210 @@
+[gd_scene load_steps=3 format=3 uid="uid://inventory123"]
+
+[ext_resource type="Script" path="res://scripts/inventory_ui.gd" id="1_inventory"]
+[ext_resource type="Texture2D" path="res://assets/ui/ui_panel_bg.png" id="2_panelbg"]
+
+[node name="InventoryUI" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_inventory")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG" type="TextureRect" parent="Panel"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+texture = ExtResource("2_panelbg")
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = 6.0
+offset_right = 0.0
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 14
+text = "背包 [I]"
+
+[node name="GoldLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 6.0
+offset_right = 190.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1, 0.84, 0, 1)
+text = "💰 0"
+horizontal_alignment = 2
+
+[node name="FilterButtons" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 32.0
+offset_right = 190.0
+offset_bottom = 56.0
+theme_override_constants/separation = 4
+
+[node name="AllBtn" type="Button" parent="Panel/FilterButtons"]
+layout_mode = 2
+text = "全部"
+
+[node name="WeaponBtn" type="Button" parent="Panel/FilterButtons"]
+layout_mode = 2
+text = "武器"
+
+[node name="ArmorBtn" type="Button" parent="Panel/FilterButtons"]
+layout_mode = 2
+text = "防具"
+
+[node name="ConsumableBtn" type="Button" parent="Panel/FilterButtons"]
+layout_mode = 2
+text = "消耗品"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 60.0
+offset_right = 190.0
+offset_bottom = 220.0
+
+[node name="ItemGrid" type="GridContainer" parent="Panel/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 4
+
+[node name="EquipPanel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 196.0
+offset_top = 32.0
+offset_right = 390.0
+offset_bottom = 130.0
+
+[node name="MainHand" type="TextureRect" parent="Panel/EquipPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 46.0
+offset_bottom = 44.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MainHandLabel" type="Label" parent="Panel/EquipPanel"]
+offset_left = 8.0
+offset_top = 46.0
+offset_right = 46.0
+offset_bottom = 62.0
+theme_override_font_sizes/font_size = 10
+text = "主手"
+horizontal_alignment = 1
+
+[node name="OffHand" type="TextureRect" parent="Panel/EquipPanel"]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 6.0
+offset_right = 92.0
+offset_bottom = 44.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="OffHandLabel" type="Label" parent="Panel/EquipPanel"]
+offset_left = 54.0
+offset_top = 46.0
+offset_right = 92.0
+offset_bottom = 62.0
+theme_override_font_sizes/font_size = 10
+text = "副手"
+horizontal_alignment = 1
+
+[node name="Helmet" type="TextureRect" parent="Panel/EquipPanel"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 6.0
+offset_right = 138.0
+offset_bottom = 44.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HelmetLabel" type="Label" parent="Panel/EquipPanel"]
+offset_left = 100.0
+offset_top = 46.0
+offset_right = 138.0
+offset_bottom = 62.0
+theme_override_font_sizes/font_size = 10
+text = "头盔"
+horizontal_alignment = 1
+
+[node name="Armor" type="TextureRect" parent="Panel/EquipPanel"]
+layout_mode = 0
+offset_left = 146.0
+offset_top = 6.0
+offset_right = 184.0
+offset_bottom = 44.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ArmorLabel" type="Label" parent="Panel/EquipPanel"]
+offset_left = 146.0
+offset_top = 46.0
+offset_right = 184.0
+offset_bottom = 62.0
+theme_override_font_sizes/font_size = 10
+text = "盔甲"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 196.0
+offset_top = 134.0
+offset_right = 390.0
+offset_bottom = 156.0
+theme_override_font_sizes/font_size = 12
+text = "⚔️ 10"
+
+[node name="DescLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 224.0
+offset_right = 390.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 12
+text = ""
+bbcode_enabled = true
+autowrap_mode = 2
+
+[node name="HintLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 272.0
+offset_right = 390.0
+offset_bottom = 292.0
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "[空格] 装备/使用 | 点击槽位卸下"
+horizontal_alignment = 1

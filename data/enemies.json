@@ -1,0 +1,68 @@
+[
+	{
+		"id": "slime",
+		"name": "史莱姆",
+		"max_hp": 20,
+		"speed": 80,
+		"attack_damage": 3,
+		"attack_range": 32,
+		"detection_range": 120,
+		"texture_path": "res://assets/generated/char_enemy.png",
+		"xp_reward": 25,
+		"gold_reward": 5
+	},
+	{
+		"id": "goblin",
+		"name": "哥布林",
+		"max_hp": 35,
+		"speed": 100,
+		"attack_damage": 5,
+		"attack_range": 36,
+		"detection_range": 140,
+		"texture_path": "res://assets/generated/char_enemy.png",
+		"xp_reward": 40,
+		"gold_reward": 8
+	},
+	{
+		"id": "wolf",
+		"name": "野狼",
+		"max_hp": 28,
+		"speed": 120,
+		"attack_damage": 4,
+		"attack_range": 30,
+		"detection_range": 160,
+		"texture_path": "res://assets/generated/char_enemy.png",
+		"xp_reward": 35,
+		"gold_reward": 6
+	},
+	{
+		"id": "cave_spider",
+		"name": "洞穴蜘蛛",
+		"max_hp": 30,
+		"speed": 90,
+		"attack_damage": 4,
+		"attack_range": 32,
+		"detection_range": 130,
+		"texture_path": "res://assets/generated/cave_spider.png",
+		"xp_reward": 35,
+		"gold_reward": 6,
+		"special_ability": "web_spit",
+		"drop_item_id": "spider_venom",
+		"drop_chance": 0.5
+	},
+	{
+		"id": "cave_bat",
+		"name": "洞穴蝙蝠",
+		"max_hp": 22,
+		"speed": 140,
+		"attack_damage": 3,
+		"attack_range": 28,
+		"detection_range": 150,
+		"texture_path": "res://assets/generated/cave_bat.png",
+		"xp_reward": 30,
+		"gold_reward": 4,
+		"special_ability": "dive",
+		"drop_item_id": "bat_wing",
+		"drop_chance": 0.5
+	}
+]

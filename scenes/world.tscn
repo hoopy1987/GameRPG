@@ -1,0 +1,116 @@
+[gd_scene load_steps=16 format=3 uid="uid://c5m1n2o3p4q5r"]
+
+[ext_resource type="PackedScene" uid="uid://d6e7f8g9h0i1j" path="res://scenes/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://k2l3m4n5o6p7q" path="res://scenes/npc.tscn" id="2_npc"]
+[ext_resource type="Script" path="res://scripts/world_generator.gd" id="3_generator"]
+[ext_resource type="TileSet" path="res://assets/new_tileset.tres" id="4_tileset"]
+[ext_resource type="PackedScene" uid="uid://h8i9j0k1l2m3n" path="res://scenes/item_pickup.tscn" id="6_item"]
+[ext_resource type="PackedScene" uid="uid://o4p5q6r7s8t9u" path="res://scenes/quest_manager.tscn" id="7_quest"]
+[ext_resource type="PackedScene" uid="uid://v0w1x2y3z4a5b" path="res://scenes/save_manager.tscn" id="8_save"]
+[ext_resource type="PackedScene" uid="uid://c3d4e5f6g7h8i" path="res://scenes/enemy_spawner.tscn" id="9_spawner"]
+[ext_resource type="PackedScene" uid="uid://b3q3j1v8x5p2w" path="res://scenes/merchant.tscn" id="10_merchant"]
+[ext_resource type="PackedScene" path="res://scenes/floating_text_manager.tscn" id="11_ftm"]
+[ext_resource type="PackedScene" path="res://scenes/quest_tracker_ui.tscn" id="12_qt"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="13_pause"]
+[ext_resource type="PackedScene" path="res://scenes/scene_fader.tscn" id="14_fader"]
+[ext_resource type="PackedScene" path="res://scenes/settings_ui.tscn" id="15_settings"]
+[ext_resource type="PackedScene" path="res://scenes/game_over_ui.tscn" id="16_gameover"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bounds"]
+size = Vector2(1320, 20)
+
+[node name="World" type="Node2D"]
+script = ExtResource("3_generator")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("4_tileset")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(640, 360)
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="NPC_Villager" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(400, 200)
+npc_name = "村民"
+texture_path = "res://assets/generated/char_villager.png"
+dialogue_lines = ["你好，旅人！", "欢迎来到炭火村。", "北边的森林很危险，千万小心……"]
+
+[node name="NPC_Shopkeeper" parent="NPCs" instance=ExtResource("10_merchant")]
+position = Vector2(600, 500)
+npc_name = "商人"
+texture_path = "res://assets/generated/char_shopkeeper.png"
+dialogue_lines = ["我这儿是全城最实惠的！", "剑？盾？药水？应有尽有！"]
+is_merchant = true
+
+[node name="EnemySpawner" parent="." instance=ExtResource("9_spawner")]
+enemy_count = 2
+
+[node name="QuestManager" parent="." instance=ExtResource("7_quest")]
+groups = PackedStringArray("quest_manager")
+
+[node name="SaveManager" parent="." instance=ExtResource("8_save")]
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="HealthPotion1" parent="Items" instance=ExtResource("6_item")]
+position = Vector2(450, 250)
+item_name = "生命药水"
+item_type = "consumable"
+item_icon = "res://assets/generated/item_potion.png"
+heal_amount = 20
+description = "恢复20点生命值"
+
+[node name="HealthPotion2" parent="Items" instance=ExtResource("6_item")]
+position = Vector2(700, 350)
+item_name = "生命药水"
+item_type = "consumable"
+item_icon = "res://assets/generated/item_potion.png"
+heal_amount = 20
+description = "恢复20点生命值"
+
+[node name="IronSword" parent="Items" instance=ExtResource("6_item")]
+position = Vector2(550, 180)
+item_name = "铁剑"
+item_type = "weapon"
+item_icon = "res://assets/generated/item_sword.png"
+damage_bonus = 5
+description = "一把基础铁剑。攻击力+5。"
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="TopWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(640, -20)
+shape = SubResource("RectangleShape2D_bounds")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(640, 740)
+shape = SubResource("RectangleShape2D_bounds")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-20, 360)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_bounds")
+
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1300, 360)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_bounds")
+
+[node name="FloatingTextManager" parent="." instance=ExtResource("11_ftm")]
+groups = PackedStringArray("floating_text_manager")
+
+[node name="QuestTrackerUI" parent="." instance=ExtResource("12_qt")]
+groups = PackedStringArray("quest_tracker_ui")
+
+[node name="PauseMenu" parent="." instance=ExtResource("13_pause")]
+
+[node name="SceneFader" parent="." instance=ExtResource("14_fader")]
+groups = PackedStringArray("scene_fader")
+
+[node name="SettingsUI" parent="." instance=ExtResource("15_settings")]
+
+[node name="GameOverUI" parent="." instance=ExtResource("16_gameover")]
+groups = PackedStringArray("game_over_ui")

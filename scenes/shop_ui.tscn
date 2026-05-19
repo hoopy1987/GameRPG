@@ -1,0 +1,144 @@
+[gd_scene load_steps=3 format=3 uid="uid://shopui123"]
+
+[ext_resource type="Script" path="res://scripts/shop_ui.gd" id="1_shop"]
+[ext_resource type="Texture2D" path="res://assets/ui/ui_panel_bg.png" id="2_panelbg"]
+
+[node name="ShopUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_shop")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -180.0
+offset_right = 200.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG" type="TextureRect" parent="Panel"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+texture = ExtResource("2_panelbg")
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 35.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 18
+text = "🏪 SHOP"
+horizontal_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -90.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 35.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 14
+text = "💰 0"
+horizontal_alignment = 2
+
+[node name="TabContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 40.0
+offset_right = 380.0
+offset_bottom = 68.0
+theme_override_constants/separation = 4
+
+[node name="BuyTab" type="Button" parent="Panel/TabContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "购买"
+
+[node name="SellTab" type="Button" parent="Panel/TabContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "出售"
+
+[node name="ItemList" type="ItemList" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = 75.0
+offset_right = 180.0
+offset_bottom = 220.0
+grow_horizontal = 2
+
+[node name="DescLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = 228.0
+offset_right = 180.0
+offset_bottom = 298.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 2
+
+[node name="ActionButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -50.0
+offset_right = 10.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Buy"
+
+[node name="CloseButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -50.0
+offset_right = 80.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Close"
+
+[connection signal="pressed" from="Panel/TabContainer/BuyTab" to="." method="_on_buy_tab"]
+[connection signal="pressed" from="Panel/TabContainer/SellTab" to="." method="_on_sell_tab"]
+[connection signal="pressed" from="Panel/ActionButton" to="." method="_on_action"]
+[connection signal="pressed" from="Panel/CloseButton" to="." method="_on_close"]

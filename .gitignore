@@ -1,0 +1,26 @@
+# Godot 4 .gitignore
+.godot/
+*.tmp
+*.log
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.pck
+*.x86_64
+*.wasm
+
+# IDE
+.vscode/
+.idea/
+*.csproj
+*.sln
+
+# OS
+*.lnk

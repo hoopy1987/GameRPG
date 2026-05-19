@@ -1,0 +1,67 @@
+[
+	{
+		"id": "health_potion",
+		"name": "生命药水",
+		"type": "consumable",
+		"icon": "res://assets/generated/item_potion.png",
+		"heal": 20,
+		"desc": "恢复20点生命值",
+		"stackable": true
+	},
+	{
+		"id": "iron_sword",
+		"name": "铁剑",
+		"type": "weapon",
+		"icon": "res://assets/generated/item_sword.png",
+		"damage_bonus": 5,
+		"desc": "一把锋利的铁剑"
+	},
+	{
+		"id": "wooden_shield",
+		"name": "木盾",
+		"type": "shield",
+		"icon": "res://assets/generated/item_shield.png",
+		"damage_bonus": 0,
+		"desc": "一面坚固的木盾"
+	},
+	{
+		"id": "leather_helmet",
+		"name": "皮头盔",
+		"type": "helmet",
+		"icon": "res://assets/generated/item_shield.png",
+		"damage_bonus": 1,
+		"desc": "基础皮革头部防护"
+	},
+	{
+		"id": "chain_armor",
+		"name": "锁子甲",
+		"type": "armor",
+		"icon": "res://assets/generated/item_shield.png",
+		"damage_bonus": 2,
+		"desc": "轻型锁子甲"
+	},
+	{
+		"id": "knight_emblem",
+		"name": "骑士纹章",
+		"type": "quest",
+		"icon": "res://assets/generated/item_crest.png",
+		"desc": "一枚烧焦的骑士纹章……和你的一模一样",
+		"stackable": false
+	},
+	{
+		"id": "spider_venom",
+		"name": "蜘蛛毒囊",
+		"type": "material",
+		"icon": "res://assets/generated/item_spider_venom.png",
+		"desc": "洞穴蜘蛛的毒囊",
+		"stackable": true
+	},
+	{
+		"id": "bat_wing",
+		"name": "蝙蝠翅膀",
+		"type": "material",
+		"icon": "res://assets/generated/item_bat_wing.png",
+		"desc": "洞穴蝙蝠的皮翼",
+		"stackable": true
+	}
+]
