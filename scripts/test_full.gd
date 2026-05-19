@@ -1,4 +1,4 @@
-extends Node
+extends SceneTree
 ## 炭火村传说 - 完整自动化测试脚本
 ## 运行方式: godot --script "res://scripts/test_full.gd" --path "项目路径"
 ## 注意: 本脚本独立运行，不作为autoload，不挂载在游戏场景中
@@ -11,7 +11,7 @@ var _world: Node
 var _player: Node
 var _test_timer: Timer
 
-func _ready():
+func _initialize():
 	_open_log()
 	_log("=".repeat(60))
 	_log("炭火村传说 - 完整自动化测试")
@@ -21,7 +21,7 @@ func _ready():
 	# 创建测试定时器
 	_test_timer = Timer.new()
 	_test_timer.one_shot = false
-	add_child(_test_timer)
+	self.root.add_child(_test_timer)
 	
 	# 启动测试序列
 	_run_test_sequence()
@@ -72,11 +72,11 @@ func _test_project_launch():
 	
 	_log("  测试1.3: 实例化世界场景")
 	_world = world_scene.instantiate()
-	add_child(_world)
+	self.root.add_child(_world)
 	_assert_not_null("世界场景实例化成功", _world)
 	
 	# 等待一帧让场景初始化
-	await get_tree().create_timer(0.1).timeout
+	await create_timer(0.1).timeout
 	
 	_log("  测试1.4: 数据加载器工作")
 	var has_data_loader = _world.has_node("DataLoader") or FileAccess.file_exists("res://data/items.json")
@@ -115,7 +115,7 @@ func _test_player_movement():
 	Input.parse_input_event(event)
 	
 	# 等待0.5秒移动
-	await get_tree().create_timer(0.5).timeout
+	await create_timer(0.5).timeout
 	
 	# 松开D键
 	event.pressed = false
@@ -131,7 +131,7 @@ func _test_player_movement():
 # ========== 阶段3: 战斗系统 ==========
 func _test_combat():
 	_log("  测试3.1: 查找敌人")
-	var enemies = _world.get_tree().get_nodes_in_group("enemy")
+	var enemies = get_nodes_in_group("enemy")
 	_assert("场景中有敌人", enemies.size() > 0, "敌人数量: %d" % enemies.size())
 	
 	if enemies.size() == 0:
@@ -152,11 +152,11 @@ func _test_combat():
 	event.keycode = KEY_J
 	event.pressed = true
 	Input.parse_input_event(event)
-	await get_tree().create_timer(0.1).timeout
+	await create_timer(0.1).timeout
 	event.pressed = false
 	Input.parse_input_event(event)
 	
-	await get_tree().create_timer(0.3).timeout
+	await create_timer(0.3).timeout
 	
 	var new_enemy_hp = _get_property_safe(enemy, "hp", -1)
 	var damage_dealt = new_enemy_hp < initial_enemy_hp
@@ -172,7 +172,7 @@ func _test_combat():
 	elif _player.has_method("take_damage"):
 		_player.call("take_damage", 5)
 	
-	await get_tree().create_timer(0.5).timeout
+	await create_timer(0.5).timeout
 	
 	var new_player_hp = _get_property_safe(_player, "current_hp", -1)
 	var invincible = _get_property_safe(_player, "invincible", false)
@@ -182,7 +182,7 @@ func _test_combat():
 # ========== 阶段4: NPC对话 ==========
 func _test_npc_dialogue():
 	_log("  测试4.1: 查找NPC")
-	var npcs = _world.get_tree().get_nodes_in_group("npc")
+	var npcs = get_nodes_in_group("npc")
 	_assert("场景中有NPC", npcs.size() > 0, "NPC数量: %d" % npcs.size())
 	
 	if npcs.size() == 0:
@@ -199,18 +199,18 @@ func _test_npc_dialogue():
 	# 移动玩家到NPC附近
 	if _player and npc:
 		_player.position = npc.position + Vector2(40, 0)
-		await get_tree().create_timer(0.2).timeout
+		await create_timer(0.2).timeout
 		
 		# 模拟空格键触发对话
 		var event = InputEventKey.new()
 		event.keycode = KEY_SPACE
 		event.pressed = true
 		Input.parse_input_event(event)
-		await get_tree().create_timer(0.1).timeout
+		await create_timer(0.1).timeout
 		event.pressed = false
 		Input.parse_input_event(event)
 		
-		await get_tree().create_timer(0.5).timeout
+		await create_timer(0.5).timeout
 		
 		# 检查是否有对话气泡显示
 		var dialogue = _world.get_node_or_null("DialogueBubble")
@@ -226,10 +226,10 @@ func _test_inventory():
 	event.keycode = KEY_I
 	event.pressed = true
 	Input.parse_input_event(event)
-	await get_tree().create_timer(0.1).timeout
+	await create_timer(0.1).timeout
 	event.pressed = false
 	Input.parse_input_event(event)
-	await get_tree().create_timer(0.3).timeout
+	await create_timer(0.3).timeout
 	
 	var inv_ui = _world.get_node_or_null("InventoryUI")
 	var inv_visible = inv_ui.visible if inv_ui else false
@@ -238,7 +238,7 @@ func _test_inventory():
 	_log("  测试5.2: 关闭背包")
 	# 再次按I键关闭
 	Input.parse_input_event(event)
-	await get_tree().create_timer(0.3).timeout
+	await create_timer(0.3).timeout
 	
 	if inv_ui:
 		_assert("背包可关闭", not inv_ui.visible, "关闭后可见: %s" % str(inv_ui.visible))
@@ -251,7 +251,7 @@ func _test_inventory():
 # ========== 阶段6: 商人交易 ==========
 func _test_merchant():
 	_log("  测试6.1: 查找商人")
-	var merchants = _world.get_tree().get_nodes_in_group("merchant")
+	var merchants = get_nodes_in_group("merchant")
 	_assert("场景中有商人", merchants.size() > 0, "商人数量: %d" % merchants.size())
 	
 	if merchants.size() == 0:
@@ -321,10 +321,10 @@ func _test_ui_systems():
 	event.keycode = KEY_ESCAPE
 	event.pressed = true
 	Input.parse_input_event(event)
-	await get_tree().create_timer(0.1).timeout
+	await create_timer(0.1).timeout
 	event.pressed = false
 	Input.parse_input_event(event)
-	await get_tree().create_timer(0.3).timeout
+	await create_timer(0.3).timeout
 	
 	var pause_menu = _world.get_node_or_null("PauseMenu")
 	var pause_visible = pause_menu.visible if pause_menu else false
@@ -406,11 +406,11 @@ func _output_final_report():
 	
 	# 清理场景
 	if _world:
-		remove_child(_world)
+		self.root.remove_child(_world)
 		_world.queue_free()
 	
 	# 退出
-	get_tree().quit(0 if _tests_failed == 0 else 1)
+	quit(0 if _tests_failed == 0 else 1)
 
 # ========== 辅助函数 ==========
 func _open_log():
@@ -456,7 +456,7 @@ func _get_property_safe(obj, prop_name: String, default_value):
 	return default_value
 
 func _find_node_by_group(root: Node, group_name: String) -> Node:
-	var nodes = root.get_tree().get_nodes_in_group(group_name)
+	var nodes = get_nodes_in_group(group_name)
 	if nodes.size() > 0:
 		return nodes[0]
 	return null
