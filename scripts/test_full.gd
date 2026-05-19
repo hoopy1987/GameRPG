@@ -139,7 +139,7 @@ func _test_player_movement():
 	# 恢复原位置
 	_player.position = initial_pos
 	
-	_assert("玩家可移动", move_capable, "速度:%.0f 位置偏移:%.1f" % [_player.get("speed", 0), _player.position.distance_to(initial_pos)])
+	_assert("玩家可移动", move_capable, "速度:%.0f 位置偏移:%.1f" % [_get_property_safe(_player, "speed", 0), _player.position.distance_to(initial_pos)])
 	
 	_log("  测试2.5: 玩家碰撞体存在")
 	var has_collision = _player.has_node("CollisionShape2D") or _player.has_node("CollisionPolygon2D")
