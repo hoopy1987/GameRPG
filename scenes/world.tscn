@@ -43,6 +43,66 @@ texture_path = "res://assets/generated/char_shopkeeper.png"
 dialogue_lines = ["我这儿是全城最实惠的！", "剑？盾？药水？应有尽有！"]
 is_merchant = true
 
+[node name="NPC_Blacksmith" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(1728, 288)
+npc_name = "格雷恩·铁锤"
+texture_path = "res://assets/generated/char_knight.png"
+dialogue_lines = ["需要打造装备吗？", "我的铁匠铺有最好的钢材！", "最近矿洞里的怪物越来越多了……"]
+
+[node name="NPC_Innkeeper" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(1088, 992)
+npc_name = "玛格丽特·麦酒"
+texture_path = "res://assets/generated/char_shopkeeper.png"
+dialogue_lines = ["来杯麦酒吗？", "我们这里消息最灵通！", "听说矿洞深处有古老的遗迹……"]
+
+[node name="NPC_Priest" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(320, 288)
+npc_name = "艾德里安·圣烛"
+texture_path = "res://assets/generated/char_villager.png"
+dialogue_lines = ["愿圣光保佑你。", "教堂的钟声能驱散邪恶。", "如果你受伤了，可以来这里祈祷恢复。"]
+
+[node name="NPC_Mayor" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(1280, 704)
+npc_name = "埃尔温·禾穗"
+texture_path = "res://assets/generated/char_villager.png"
+dialogue_lines = ["啊……又一位冒险者。", "我是埃尔温·禾穗，这个村子的看守者。", "别生气，孩子。我见过太多人走进矿洞，没几个走出来。"]
+
+[node name="NPC_Herbalist" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(384, 384)
+npc_name = "莉安娜·药钵"
+texture_path = "res://assets/generated/char_villager.png"
+dialogue_lines = ["你身上有伤口的味道。", "我是莉安娜。不是医生，是草药师。", "总之喝了能活。这就够了。"]
+
+[node name="NPC_Hunter" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(128, 160)
+npc_name = "卡斯帕·灰羽"
+texture_path = "res://assets/generated/char_knight.png"
+dialogue_lines = ["……（从阴影中走出）", "卡斯帕。猎人。", "不卖东西给傻瓜。你看起来……还行。"]
+
+[node name="NPC_Merchant" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(1600, 608)
+npc_name = "托拜厄斯·秤杆"
+texture_path = "res://assets/generated/char_shopkeeper.png"
+dialogue_lines = ["托拜厄斯·秤杆，为你服务！", "从东方到西方——只要你想买，我就能卖！", "你是属鹫的，专啄我这种老实商人。"]
+
+[node name="NPC_Farmer" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(1600, 384)
+npc_name = "布丽奇特·炉火"
+texture_path = "res://assets/generated/char_villager.png"
+dialogue_lines = ["哟！新面孔！", "我是布丽奇特，种番茄的。", "至少番茄不会骗我。"]
+
+[node name="NPC_Guard" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(1280, 1376)
+npc_name = "汤姆·石墙"
+texture_path = "res://assets/generated/char_knight.png"
+dialogue_lines = ["站住。报上姓名和来意。", "你这身板，进去出不来的概率七成以上。", "别惹事。别偷东西。别在广场撒尿。"]
+
+[node name="NPC_Scholar" parent="NPCs" instance=ExtResource("2_npc")]
+position = Vector2(1216, 672)
+npc_name = "艾拉·星尘"
+texture_path = "res://assets/generated/char_villager.png"
+dialogue_lines = ["哦哦哦！冒险者！", "我是艾拉·星尘，独立学者！", "这个矿洞！不简单！古籍里提到过！"]
+
 [node name="EnemySpawner" parent="." instance=ExtResource("9_spawner")]
 enemy_count = 2
 
