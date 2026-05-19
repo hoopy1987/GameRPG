@@ -45,8 +45,34 @@ func _on_load() -> void:
 	else:
 		var save_mgr = get_tree().get_first_node_in_group("save_manager") as Node
 		if save_mgr and save_mgr.has_method("load_game"):
-			save_mgr.load_game(0)
-			toggle_pause()
+			# 检查当前是否已经在world场景中
+			var current_scene := get_tree().current_scene
+			var is_in_world := current_scene and current_scene.scene_file_path == "res://scenes/world.tscn"
+			
+			if not is_in_world:
+				var err := get_tree().change_scene_to_file("res://scenes/world.tscn")
+				if err != OK:
+					push_error("切换场景失败: %d" % err)
+					return
+				await get_tree().process_frame
+				await get_tree().process_frame
+				await get_tree().process_frame
+			
+			# 确保player就绪
+			var attempts := 0
+			var player = get_tree().get_first_node_in_group("player") as Node2D
+			while not player and attempts < 10:
+				await get_tree().process_frame
+				player = get_tree().get_first_node_in_group("player") as Node2D
+				attempts += 1
+			
+			if not player:
+				push_error("读取存档失败：找不到player节点")
+				return
+			
+			var success := save_mgr.load_game(0)
+			if success:
+				toggle_pause()
 
 func _on_settings() -> void:
 	var settings = get_tree().get_first_node_in_group("settings_ui")

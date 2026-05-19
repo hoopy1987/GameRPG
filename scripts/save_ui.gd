@@ -126,10 +126,50 @@ func _on_load_slot(slot: int) -> void:
 	var fader = get_tree().get_first_node_in_group("scene_fader")
 	if fader and fader.has_method("fade_out"):
 		await fader.fade_out(0.5)
-	get_tree().change_scene_to_file("res://scenes/world.tscn")
-	await get_tree().process_frame
+	
+	# 检查当前是否已经在world场景中
+	var current_scene := get_tree().current_scene
+	var is_in_world := current_scene and current_scene.scene_file_path == "res://scenes/world.tscn"
+	
+	if not is_in_world:
+		# 切换到world场景
+		var err := get_tree().change_scene_to_file("res://scenes/world.tscn")
+		if err != OK:
+			push_error("切换场景失败: %d" % err)
+			if ToastManager and ToastManager.has_method("show_toast"):
+				ToastManager.show_toast("场景切换失败，无法读取存档", 2.0)
+			return
+		
+		# 等待新场景完全加载（多帧以确保所有节点_ready()执行完毕）
+		await get_tree().process_frame
+		await get_tree().process_frame
+		await get_tree().process_frame
+	
+	# 确保player节点已就绪
+	var attempts := 0
+	var player = get_tree().get_first_node_in_group("player") as Node2D
+	while not player and attempts < 10:
+		await get_tree().process_frame
+		player = get_tree().get_first_node_in_group("player") as Node2D
+		attempts += 1
+	
+	if not player:
+		push_error("读取存档失败：找不到player节点")
+		if ToastManager and ToastManager.has_method("show_toast"):
+			ToastManager.show_toast("读取存档失败：找不到玩家", 2.0)
+		return
+	
+	# 调用load_game
 	if SaveManager and SaveManager.has_method("load_game"):
-		SaveManager.load_game(slot)
+		var success := SaveManager.load_game(slot)
+		if not success:
+			push_error("load_game返回失败，槽位: %d" % slot)
+			if ToastManager and ToastManager.has_method("show_toast"):
+				ToastManager.show_toast("读取存档失败", 2.0)
+	else:
+		push_error("SaveManager不可用")
+		if ToastManager and ToastManager.has_method("show_toast"):
+			ToastManager.show_toast("存档系统不可用", 2.0)
 
 func _on_delete_slot(slot: int) -> void:
 	if SaveManager and SaveManager.has_method("delete_save"):

@@ -468,10 +468,14 @@ func _input(event: InputEvent) -> void:
 		unequip_slot("main_hand")
 	
 	if event.is_action_pressed("save_game"):
-		if SaveUI and SaveUI.has_method("open"):
-			SaveUI.open()
+		# F5: 快速保存到槽位0
+		if SaveManager and SaveManager.has_method("save_game"):
+			SaveManager.save_game(0)
+		else:
+			push_warning("SaveManager not available for quick save")
 	
 	if event.is_action_pressed("load_game"):
+		# F6: 打开存档UI面板，让用户选择读取哪个存档
 		if SaveUI and SaveUI.has_method("open"):
 			SaveUI.open()
 	
