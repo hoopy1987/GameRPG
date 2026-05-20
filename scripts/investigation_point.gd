@@ -1,8 +1,11 @@
 extends Area2D
 
+@export var point_name: String = "调查点"
+@export var dialogue_text: String = ""
+
 func interact() -> void:
 	var lines: Array = get_meta("investigation_lines", [])
-	var point_name: String = get_meta("point_name", "???")
+	var meta_point_name: String = get_meta("point_name", point_name)
 	if lines.is_empty():
 		return
 	
@@ -13,4 +16,4 @@ func interact() -> void:
 		DialogueBubble.start_dialogue(self, formatted)
 	else:
 		for line in lines:
-			print("[%s] %s" % [point_name, line])
+			print("[%s] %s" % [meta_point_name, line])

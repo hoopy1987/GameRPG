@@ -36,7 +36,16 @@ func show_line() -> void:
 			name_label.text = parts[0].strip_edges()
 			_set_text(parts[1].strip_edges())
 		else:
-			name_label.text = current_npc.npc_name if current_npc else "???"
+			# Speaker name compatibility: NPC has npc_name, investigation point has point_name
+			var speaker_name := "???"
+			if current_npc:
+				if "npc_name" in current_npc:
+					speaker_name = current_npc.npc_name
+				elif "point_name" in current_npc:
+					speaker_name = current_npc.point_name
+				elif current_npc.has_meta("point_name"):
+					speaker_name = current_npc.get_meta("point_name")
+			name_label.text = speaker_name
 			_set_text(line)
 		
 		continue_hint.visible = false
