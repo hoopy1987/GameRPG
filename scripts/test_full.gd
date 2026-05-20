@@ -867,12 +867,28 @@ func _test_compile_checks():
 
 # ========== 阶段17: 交互模拟测试 ==========
 func _test_interaction_simulation():
-	var test_script = load("res://scripts/test_interaction.gd").new()
-	test_script.setup(_world, _player as CharacterBody2D, self, _log)
-	var results = await test_script.run_tests()
-	_tests_passed += results.passed
-	_tests_failed += results.failed
-	_log("  阶段17统计: 通过%d, 失败%d" % [results.passed, results.failed])
+	# 17.1 移动连通性
+	var movement_test = load("res://scripts/test_movement.gd").new()
+	movement_test.setup(_world, _player as CharacterBody2D, self, _log)
+	var movement_results = await movement_test.run_tests()
+	_tests_passed += movement_results.passed
+	_tests_failed += movement_results.failed
+	
+	# 17.2-17.3 交互系统
+	var interaction_test = load("res://scripts/test_interaction.gd").new()
+	interaction_test.setup(_world, _player as CharacterBody2D, self, _log)
+	var interaction_results = await interaction_test.run_tests()
+	_tests_passed += interaction_results.passed
+	_tests_failed += interaction_results.failed
+	
+	# 17.4 战斗系统
+	var combat_test = load("res://scripts/test_combat.gd").new()
+	combat_test.setup(_world, _player as CharacterBody2D, self, _log)
+	var combat_results = await combat_test.run_tests()
+	_tests_passed += combat_results.passed
+	_tests_failed += combat_results.failed
+	
+	_log("  阶段17统计: 移动%d项/交互%d项/战斗%d项" % [movement_results.passed + movement_results.failed, interaction_results.passed + interaction_results.failed, combat_results.passed + combat_results.failed])
 
 # ========== 测试报告输出 ==========
 func _output_final_report():
