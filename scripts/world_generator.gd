@@ -425,9 +425,11 @@ func _build_building(x: int, y: int, w: int, h: int,
 		tile_map.set_cell(Vector2i(x, hy), 0, wall)
 		tile_map.set_cell(Vector2i(x + w - 1, hy), 0, wall)
 
-	# Door (stone tile in bottom wall, center)
-	var door_x := x + w / 2
-	tile_map.set_cell(Vector2i(door_x, y + h - 1), 0, STONE)
+	# Door (stone tiles in bottom wall, center, 2 tiles wide)
+	var door_x1 := x + w / 2 - 1
+	var door_x2 := x + w / 2
+	tile_map.set_cell(Vector2i(door_x1, y + h - 1), 0, STONE)
+	tile_map.set_cell(Vector2i(door_x2, y + h - 1), 0, STONE)
 
 	# Windows (wall tiles replaced with wood on side walls)
 	if h > 4:
@@ -454,16 +456,22 @@ func _build_building(x: int, y: int, w: int, h: int,
 	# Top wall
 	_add_wall_collision(walls, Vector2((x + w / 2.0) * TILE_SIZE, y * TILE_SIZE), Vector2(w * TILE_SIZE, 8))
 	# Bottom wall (split at door)
-	var door_tile_x := door_x
-	if door_tile_x > x:
-		var left_width := (door_tile_x - x) * TILE_SIZE
-		_add_wall_collision(walls, Vector2((x + (door_tile_x - x) / 2.0) * TILE_SIZE, (y + h - 1) * TILE_SIZE), Vector2(left_width, 8))
-	if door_tile_x < x + w - 1:
-		var right_start := door_tile_x + 1
+	if door_x1 > x:
+		var left_width := (door_x1 - x) * TILE_SIZE
+		_add_wall_collision(walls, Vector2((x + (door_x1 - x) / 2.0) * TILE_SIZE, (y + h - 1) * TILE_SIZE), Vector2(left_width, 8))
+	if door_x2 < x + w - 1:
+		var right_start := door_x2 + 1
 		var right_width := (x + w - right_start) * TILE_SIZE
 		_add_wall_collision(walls, Vector2((right_start + (x + w - right_start) / 2.0) * TILE_SIZE, (y + h - 1) * TILE_SIZE), Vector2(right_width, 8))
-	# Left wall
-	_add_wall_collision(walls, Vector2(x * TILE_SIZE, (y + h / 2.0) * TILE_SIZE), Vector2(8, h * TILE_SIZE))
+	# Left wall (split at door height)
+	var door_y := y + h - 1
+	if door_x1 == x or door_x1 > x:
+		var left_top_height := (door_y - y) * TILE_SIZE
+		if left_top_height > 0:
+			_add_wall_collision(walls, Vector2(x * TILE_SIZE, (y + (door_y - y) / 2.0) * TILE_SIZE), Vector2(8, left_top_height))
+	if door_y < y + h - 1:
+		var left_bottom_height := (y + h - 1 - door_y) * TILE_SIZE
+		_add_wall_collision(walls, Vector2(x * TILE_SIZE, (door_y + 1 + (y + h - 1 - door_y) / 2.0) * TILE_SIZE), Vector2(8, left_bottom_height))
 	# Right wall
 	_add_wall_collision(walls, Vector2((x + w - 1) * TILE_SIZE, (y + h / 2.0) * TILE_SIZE), Vector2(8, h * TILE_SIZE))
 
@@ -581,8 +589,8 @@ func _add_details() -> void:
 	tile_map.set_cell(Vector2i(42, 25), 0, WALL)
 
 	# Village entrance signs (south road)
-	tile_map.set_cell(Vector2i(38, 40), 0, WALL)
-	tile_map.set_cell(Vector2i(42, 40), 0, WALL)
+	tile_map.set_cell(Vector2i(38, 41), 0, WALL)
+	tile_map.set_cell(Vector2i(42, 41), 0, WALL)
 
 	# Well near market
 	tile_map.set_cell(Vector2i(46, 19), 0, WATER)
