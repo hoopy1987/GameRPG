@@ -74,6 +74,9 @@ func _run_test_sequence():
 	
 	_log("\n[阶段16] 编译与运行时完整性检查")
 	await _test_compile_sanity()
+	
+	_log("\n[阶段17] 交互模拟测试")
+	await _test_interaction_simulation()
 
 	# 输出最终报告
 	_output_final_report()
@@ -991,6 +994,15 @@ func _test_compile_sanity():
 				ready_detail = "%s _ready()未完成" % node.name
 				break
 	_assert("所有节点_ready()完毕", ready_check_ok, "检查节点: %d, %s" % [checked_count, ready_detail])
+# ========== 阶段17: 交互模拟测试 ==========
+func _test_interaction_simulation():
+	var test_script = load("res://scripts/test_interaction.gd").new()
+	test_script.setup(_world, _player, self, _log)
+	var results = await test_script.run_tests()
+	_tests_passed += results.passed
+	_tests_failed += results.failed
+	_log("  阶段17统计: 通过%d, 失败%d" % [results.passed, results.failed])
+
 # ========== 测试报告输出 ==========
 func _output_final_report():
 	_log("\n" + "=".repeat(60))
