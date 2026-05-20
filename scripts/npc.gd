@@ -21,6 +21,13 @@ func _ready() -> void:
 	
 	# Dynamically load texture and create sprite frames
 	var tex := load(texture_path) as Texture2D
+	# Headless fallback: if import cache missing, load PNG directly
+	if not tex:
+		var img := Image.new()
+		var err := img.load(texture_path)
+		if err == OK:
+			tex = ImageTexture.create_from_image(img)
+			print("NPC headless fallback loaded: ", texture_path)
 	if tex:
 		var frames := SpriteFrames.new()
 		var base_name: String = texture_path.get_file().get_basename()

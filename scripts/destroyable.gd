@@ -49,4 +49,11 @@ func _spawn_item(name: String, type: String, icon: String, gold_amount: int = 0,
 		if heal > 0:
 			item.heal_amount = heal
 		item.position = global_position + Vector2(randi() % 20 - 10, randi() % 20 - 10)
-		get_tree().current_scene.add_child(item)
+		# Safe add_child: current_scene may be null in test environments
+		var target_parent = get_tree().current_scene
+		if not target_parent:
+			target_parent = get_tree().root
+		if target_parent and is_instance_valid(target_parent):
+			target_parent.add_child(item)
+		else:
+			push_warning("Destroyable: no valid parent to add dropped item")
