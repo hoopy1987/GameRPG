@@ -687,7 +687,7 @@ func _add_investigation_point(parent: Node, tile_pos: Vector2, label_name: Strin
 	label.offset_bottom = -20.0
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", 10)
-	label.theme_override_colors.font_color = Color(1, 1, 0.8, 1)
+	label.add_theme_color_override("font_color", Color(1, 1, 0.8, 1))
 	label.text = "[空格] 调查"
 	label.visible = false
 	area.add_child(label)
@@ -758,7 +758,7 @@ func _add_campfire() -> void:
 	label.offset_bottom = -30.0
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", 10)
-	label.theme_override_colors.font_color = Color(1, 0.7, 0.3, 1)
+	label.add_theme_color_override("font_color", Color(1, 0.7, 0.3, 1))
 	label.text = "[停留] 休息恢复"
 	label.visible = false
 	campfire.add_child(label)
@@ -860,7 +860,7 @@ func _add_destroyable(parent: Node, tile_pos: Vector2i) -> void:
 	label.offset_bottom = -10.0
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", 10)
-	label.theme_override_colors.font_color = Color(0.9, 0.3, 0.3, 1)
+	label.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3, 1))
 	label.text = "[攻击] 破坏"
 	label.visible = false
 	d.add_child(label)
