@@ -625,7 +625,8 @@ func _add_investigation_points() -> void:
 	add_child(ip_parent)
 
 	# 1. Square notice board — shows available quests hint
-	_add_investigation_point(ip_parent, Vector2(40, 24), "公告板",
+	# Position: inside square, south edge but not on WALL tile
+	_add_investigation_point(ip_parent, Vector2(40, 23), "公告板",
 		["【村庄公告板】",
 		"~ 近期委托 ~",
 		"• 铁匠格雷恩：急需矿洞深处的优质矿石",
@@ -635,7 +636,8 @@ func _add_investigation_points() -> void:
 		"（与对应NPC对话可接取任务）"])
 
 	# 2. Church graveyard — village history fragments
-	_add_investigation_point(ip_parent, Vector2(19, 9), "墓碑",
+	# Position: east of church cemetery markers, on grass
+	_add_investigation_point(ip_parent, Vector2(20, 9), "墓碑",
 		["【无名墓碑】",
 		"这里安息着炭火村的开拓者们。",
 		"百年前，一群矿工在此发现了永不熄灭的炭火，",
@@ -644,7 +646,8 @@ func _add_investigation_points() -> void:
 		"—— 愿圣光守护他们的灵魂"])
 
 	# 3. Tavern signboard — shows daily specials
-	_add_investigation_point(ip_parent, Vector2(40, 29), "酒馆木牌",
+	# Position: north of tavern roof overhang, avoiding WALL tile at (40,29)
+	_add_investigation_point(ip_parent, Vector2(40, 28), "酒馆木牌",
 		["【金麦穗酒馆 · 今日特供】",
 		"• 黑麦烈酒 —— 5铜币",
 		"• 烤野猪肉 —— 12铜币",
@@ -653,7 +656,8 @@ func _add_investigation_points() -> void:
 		"（传闻：酒馆老板知道很多消息……）"])
 
 	# 4. Blacksmith anvil — forging tip
-	_add_investigation_point(ip_parent, Vector2(54, 9), "铁砧",
+	# Position: outside blacksmith door, on walkable alley/road
+	_add_investigation_point(ip_parent, Vector2(56, 15), "铁砧",
 		["【铁砧旁的便条】",
 		"'矿石品质决定武器上限。'",
 		"",
@@ -663,7 +667,8 @@ func _add_investigation_points() -> void:
 		"—— 格雷恩·铁锤"])
 
 	# 5. Well near market — rumor
-	_add_investigation_point(ip_parent, Vector2(46, 19), "水井",
+	# Position: next to well, avoiding WATER tile at (46,19)
+	_add_investigation_point(ip_parent, Vector2(46, 18), "水井",
 		["【村民的低语】",
 		"据说矿洞最深处有什么东西在动……",
 		"别一个人去，带上火把和剑。",

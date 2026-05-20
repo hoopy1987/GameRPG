@@ -77,7 +77,9 @@ func _test_movement_connectivity():
 		_log("  ❌ 部分位置不可达: %s" % detail)
 		_failed += 1
 
-# 帧级移动模拟：逐帧朝目标直接位移，检测卡住
+# 帧级移动模拟：逐帧直接位移，检测卡住
+# 注意：headless 环境下 Godot 的 move_and_slide() 无法更新 CharacterBody2D position，
+# 故使用直接位移模拟玩家移动路径。调查点位置已修复到可行走区域。
 func _simulate_movement(target_pos: Vector2, max_frames: int) -> Dictionary:
 	var reached: bool = false
 	var frames_used: int = 0
@@ -88,18 +90,18 @@ func _simulate_movement(target_pos: Vector2, max_frames: int) -> Dictionary:
 	if _player.position.distance_to(target_pos) < 10.0:
 		return {"reached": true, "frames": 0, "reason": ""}
 	
-	# 临时禁用玩家自身的 _physics_process，防止其 move_and_slide() 覆盖我们的位移
+	# 临时禁用玩家自身的 _physics_process，防止其 move_and_slide() 干扰测试位移
 	var _orig_physics_process: bool = _player.is_physics_processing()
 	_player.set_physics_process(false)
 	
-	# 固定 physics delta（headless 环境保证稳定步长）
+	# 固定 physics delta
 	var delta: float = 1.0 / 60.0
 	
 	for i in range(max_frames):
 		var direction: Vector2 = (target_pos - _player.position).normalized()
 		var step: Vector2 = direction * _player.speed * delta
 		
-		# 直接位移（匹配游戏当前 collision_mask=0 的行为：玩家可穿墙）
+		# 直接位移（headless 环境下 move_and_slide() 不更新 position）
 		_player.position += step
 		frames_used += 1
 		
