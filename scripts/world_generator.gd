@@ -831,6 +831,7 @@ func _add_destroyable(parent: Node, tile_pos: Vector2i) -> void:
 
 	# Sprite
 	var sprite := Sprite2D.new()
+	sprite.name = "Sprite2D"
 	var tex := load("res://assets/generated/tile_wood.png") as Texture2D
 	if not tex:
 		# Fallback: try to find any wood-looking texture
