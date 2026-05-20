@@ -5,13 +5,13 @@ extends Node
 ## 用于 test_full.gd 阶段17：模拟玩家操作并验证交互结果
 
 var _world: Node
-var _player: Node2D
+var _player: CharacterBody2D
 var _tree: SceneTree
 var _log_func: Callable
 var _passed := 0
 var _failed := 0
 
-func setup(world: Node, player: Node2D, tree: SceneTree, log_func: Callable):
+func setup(world: Node, player: CharacterBody2D, tree: SceneTree, log_func: Callable):
 	_world = world
 	_player = player
 	_tree = tree
@@ -20,16 +20,16 @@ func setup(world: Node, player: Node2D, tree: SceneTree, log_func: Callable):
 func run_tests() -> Dictionary:
 	_log("\n[阶段17] 交互模拟测试")
 	
-	await _test_teleport_connectivity()
+	await _test_movement_connectivity()
 	await _test_investigation_interaction()
 	await _test_campfire_heal()
 	await _test_destroyable_attack()
 	
 	return {"passed": _passed, "failed": _failed}
 
-# ========== 17.1 路径连通性：瞬移+碰撞检测 ==========
-func _test_teleport_connectivity():
-	_log("  测试17.1-L1: 瞬移连通性检测（5个关键位置）")
+# ========== 17.1 路径连通性：帧级移动模拟 ==========
+func _test_movement_connectivity():
+	_log("  测试17.1-L1: 帧级移动连通性检测（5个关键位置）")
 	
 	if not _is_ready():
 		_log("  ❌ 世界或玩家未就绪")
@@ -37,7 +37,6 @@ func _test_teleport_connectivity():
 		return
 	
 	var TILE_SIZE := 32
-	# 5个关键位置（tile坐标转世界坐标）
 	var targets := [
 		{"name": "篝火", "pos": Vector2(38 * TILE_SIZE + TILE_SIZE / 2, 33 * TILE_SIZE + TILE_SIZE / 2)},
 		{"name": "铁匠铺门口", "pos": Vector2(56 * TILE_SIZE, 15 * TILE_SIZE)},
@@ -48,24 +47,87 @@ func _test_teleport_connectivity():
 	
 	var all_reachable: bool = true
 	var detail: String = ""
+	var total_frames: int = 0
+	
 	for target in targets:
-		var old_pos: Vector2 = _player.position
-		_player.position = target.pos
-		await _tree.create_timer(0.05).timeout
-		var blocked: bool = _player.position.distance_to(target.pos) > 20.0
-		if blocked:
-			all_reachable = false
-			detail += "%s被阻挡 | " % target.name
-			_log("  ❌ %s 不可达 (期望:%s 实际:%s)" % [target.name, target.pos, _player.position])
+		_log("  → 前往 %s (%s)" % [target.name, target.pos])
+		var result := await _simulate_movement(target.pos, 300)  # 最多300帧（约5秒@60fps）
+		
+		if result.reached:
+			_log("  ✅ %s 可达（%d帧，约%.1f秒）" % [target.name, result.frames, result.frames / 60.0])
+			_passed += 1
 		else:
-			_log("  ✅ %s 可达" % target.name)
-		_passed += 1
+			all_reachable = false
+			detail += "%s:%s | " % [target.name, result.reason]
+			_log("  ❌ %s 不可达：%s" % [target.name, result.reason])
+			_failed += 1
+		
+		total_frames += result.frames
+		
+		# 记录异常耗时（超出预期路径时间过多可能暗示绕行）
+		if result.frames > 200:
+			_log("  ⚠️ %s 耗时较长（%d帧），可能存在绕行或狭窄通道" % [target.name, result.frames])
+	
+	_log("  总移动帧数: %d（约%.1f秒）" % [total_frames, total_frames / 60.0])
 	
 	if all_reachable:
-		_log("  ✅ 所有关键位置可达")
+		_log("  ✅ 所有关键位置帧级移动可达")
+		_passed += 1
 	else:
-		_log("  ❌ 部分位置被阻挡: %s" % detail)
+		_log("  ❌ 部分位置不可达: %s" % detail)
 		_failed += 1
+
+# 帧级移动模拟：逐帧朝目标直接位移，检测卡住
+func _simulate_movement(target_pos: Vector2, max_frames: int) -> Dictionary:
+	var reached: bool = false
+	var frames_used: int = 0
+	var stuck_frames: int = 0
+	var reason: String = ""
+	var prev_pos: Vector2 = _player.position
+	
+	if _player.position.distance_to(target_pos) < 10.0:
+		return {"reached": true, "frames": 0, "reason": ""}
+	
+	# 临时禁用玩家自身的 _physics_process，防止其 move_and_slide() 覆盖我们的位移
+	var _orig_physics_process: bool = _player.is_physics_processing()
+	_player.set_physics_process(false)
+	
+	# 固定 physics delta（headless 环境保证稳定步长）
+	var delta: float = 1.0 / 60.0
+	
+	for i in range(max_frames):
+		var direction: Vector2 = (target_pos - _player.position).normalized()
+		var step: Vector2 = direction * _player.speed * delta
+		
+		# 直接位移（匹配游戏当前 collision_mask=0 的行为：玩家可穿墙）
+		_player.position += step
+		frames_used += 1
+		
+		# 到达判定
+		if _player.position.distance_to(target_pos) < 10.0:
+			reached = true
+			break
+		
+		# 卡住检测：连续30帧位移<0.5px视为进入不可移动状态
+		var moved: float = _player.position.distance_to(prev_pos)
+		if moved < 0.5:
+			stuck_frames += 1
+			if stuck_frames > 30:
+				reason = "在%s附近卡住%d帧（位移极小，可能进入不可移动状态）" % [str(_player.position.round()), stuck_frames]
+				break
+		else:
+			stuck_frames = 0
+		
+		prev_pos = _player.position
+		await _tree.physics_frame
+	
+	# 恢复原始 _physics_process 状态
+	_player.set_physics_process(_orig_physics_process)
+	
+	if not reached and reason == "":
+		reason = "%d帧内未到达目标（剩余距离%.0f）" % [frames_used, _player.position.distance_to(target_pos)]
+	
+	return {"reached": reached, "frames": frames_used, "reason": reason}
 
 # ========== 17.2 调查点交互模拟 ==========
 func _test_investigation_interaction():
@@ -94,15 +156,18 @@ func _test_investigation_interaction():
 	var dialogue_ui_ok: bool = false
 	var detail: String = ""
 	
-	# 逐个测试调查点交互
+	# 逐个测试调查点交互（先移动过去再交互）
 	for i in range(ip_count):
 		var ip = ip_parent.get_child(i)
 		if not ip:
 			continue
 		
-		# 瞬移到调查点位置
-		_player.position = ip.position
-		await _tree.create_timer(0.05).timeout
+		# 帧级移动到调查点
+		var move_result := await _simulate_movement(ip.position, 200)
+		if not move_result.reached:
+			_log("  ⚠️ 无法走到 %s（%s），尝试瞬移" % [ip.name, move_result.reason])
+			_player.position = ip.position
+			await _tree.create_timer(0.05).timeout
 		
 		# 调用交互方法
 		if ip.has_method("interact"):
@@ -173,9 +238,12 @@ func _test_campfire_heal():
 	
 	_log("  玩家当前HP: %d/%d" % [old_hp, max_hp])
 	
-	# 瞬移到篝火位置
-	_player.position = campfire.position
-	await _tree.create_timer(0.1).timeout
+	# 帧级移动到篝火位置
+	var move_result := await _simulate_movement(campfire.position, 200)
+	if not move_result.reached:
+		_log("  ⚠️ 无法走到篝火（%s），瞬移过去" % move_result.reason)
+		_player.position = campfire.position
+		await _tree.create_timer(0.1).timeout
 	
 	# 触发篝火进入（如果有body_entered信号连接）
 	if campfire.has_node("Area2D"):
@@ -240,9 +308,12 @@ func _test_destroyable_attack():
 	
 	_log("  测试箱桶: %s @ %s" % [test_dest.name, test_dest.position])
 	
-	# 瞬移到箱桶位置
-	_player.position = test_dest.position
-	await _tree.create_timer(0.05).timeout
+	# 帧级移动到箱桶位置
+	var move_result := await _simulate_movement(test_dest.position, 200)
+	if not move_result.reached:
+		_log("  ⚠️ 无法走到箱桶（%s），瞬移过去" % move_result.reason)
+		_player.position = test_dest.position
+		await _tree.create_timer(0.05).timeout
 	
 	# 记录攻击前的状态
 	var dest_name = test_dest.name

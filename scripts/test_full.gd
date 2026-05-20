@@ -997,7 +997,7 @@ func _test_compile_sanity():
 # ========== 阶段17: 交互模拟测试 ==========
 func _test_interaction_simulation():
 	var test_script = load("res://scripts/test_interaction.gd").new()
-	test_script.setup(_world, _player, self, _log)
+	test_script.setup(_world, _player as CharacterBody2D, self, _log)
 	var results = await test_script.run_tests()
 	_tests_passed += results.passed
 	_tests_failed += results.failed
