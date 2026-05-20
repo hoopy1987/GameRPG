@@ -94,6 +94,20 @@ func _simulate_movement(target_pos: Vector2, max_frames: int) -> Dictionary:
 	var _orig_physics_process: bool = _player.is_physics_processing()
 	_player.set_physics_process(false)
 	
+	# 解除对话/商店锁定：确保 _physics_process 恢复后玩家可正常移动
+	var dialogue_bubble = _tree.root.get_node_or_null("DialogueBubble")
+	if dialogue_bubble and dialogue_bubble.has_method("close_dialogue"):
+		dialogue_bubble.close_dialogue()
+	elif dialogue_bubble and "is_active" in dialogue_bubble:
+		dialogue_bubble.is_active = false
+	
+	# 关闭商人商店UI（如果打开）
+	var merchant = _tree.get_first_node_in_group("merchant")
+	if merchant and merchant.has_method("get_shop_ui"):
+		var shop = merchant.get_shop_ui()
+		if shop and "visible" in shop:
+			shop.visible = false
+	
 	# 固定 physics delta
 	var delta: float = 1.0 / 60.0
 	
