@@ -679,6 +679,17 @@ func _add_investigation_point(parent: Node, tile_pos: Vector2, label_name: Strin
 	shape.shape = circle
 	area.add_child(shape)
 
+	# Visible marker so players can spot investigation points
+	var marker := Sprite2D.new()
+	marker.name = "Marker"
+	var m_tex := load("res://assets/generated/item_potion.png") as Texture2D
+	if m_tex:
+		marker.texture = m_tex
+		marker.scale = Vector2(0.25, 0.25)
+		marker.modulate = Color(1.0, 1.0, 0.3, 0.85)
+	marker.z_index = 5
+	area.add_child(marker)
+
 	var label := Label.new()
 	label.name = "Label"
 	label.offset_left = -60.0
@@ -720,6 +731,16 @@ func _add_campfire() -> void:
 	campfire.position = Vector2(38 * TILE_SIZE + TILE_SIZE / 2, 33 * TILE_SIZE + TILE_SIZE / 2)
 	add_child(campfire)
 
+	# Fire base (visible even without particles)
+	var fire_sprite := Sprite2D.new()
+	fire_sprite.name = "FireSprite"
+	var fire_tex := load("res://assets/generated/tile_stone.png") as Texture2D
+	if fire_tex:
+		fire_sprite.texture = fire_tex
+		fire_sprite.scale = Vector2(0.6, 0.6)
+		fire_sprite.modulate = Color(1.0, 0.5, 0.1, 0.95)
+	campfire.add_child(fire_sprite)
+
 	# Fire particles
 	var particles := CPUParticles2D.new()
 	particles.name = "FireParticles"
@@ -735,6 +756,10 @@ func _add_campfire() -> void:
 	particles.scale_amount_max = 5.0
 	particles.color = Color(1.0, 0.4, 0.1, 0.9)
 	particles.color_ramp = _create_fire_gradient()
+	# Use a small texture for particles so they are visible
+	var p_tex := load("res://assets/generated/tile_stone.png") as Texture2D
+	if p_tex:
+		particles.texture = p_tex
 	campfire.add_child(particles)
 
 	# Interaction area
