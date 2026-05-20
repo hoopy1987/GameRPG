@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://YAYCd951E3HaT"
-path="res://.godot/imported/char_farmer.png-95e5de3e44b7490abccc3d704e266c4b.ctex"
+uid="uid://cjch6q374ss8"
+path="res://.godot/imported/char_farmer.png-721247d6f5fb335c45a09184b760fc27.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_farmer.png"
-dest_files=["res://.godot/imported/char_farmer.png-95e5de3e44b7490abccc3d704e266c4b.ctex"]
+dest_files=["res://.godot/imported/char_farmer.png-721247d6f5fb335c45a09184b760fc27.ctex"]
 
 [params]
 

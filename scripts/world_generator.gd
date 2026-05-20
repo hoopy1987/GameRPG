@@ -378,7 +378,7 @@ func _build_stream() -> void:
 	for pt in stream_points:
 		if pt.x >= 0 and pt.x < VILLAGE_W and pt.y >= 0 and pt.y < VILLAGE_H:
 			tile_map.set_cell(pt, 0, WATER)
-	# Stream banks (stone tiles adjacent to water)
+	# Stream banks: inner = sand beach (direct neighbors), outer = stone (diagonal)
 	for pt in stream_points:
 		for dx in range(-1, 2):
 			for dy in range(-1, 2):
@@ -389,7 +389,11 @@ func _build_stream() -> void:
 				if bx >= 0 and bx < VILLAGE_W and by >= 0 and by < VILLAGE_H:
 					var cell := tile_map.get_cell_atlas_coords(Vector2i(bx, by))
 					if cell == GRASS or cell == DIRT or cell == SAND:
-						tile_map.set_cell(Vector2i(bx, by), 0, STONE)
+						# Direct neighbors get sand (beach), diagonal gets stone
+						if abs(dx) + abs(dy) == 1:
+							tile_map.set_cell(Vector2i(bx, by), 0, SAND)
+						else:
+							tile_map.set_cell(Vector2i(bx, by), 0, STONE)
 
 # ---------------------------------------------------------------------------
 # Bridges: 2 wooden bridges crossing the stream
@@ -854,16 +858,16 @@ func _add_destroyable(parent: Node, tile_pos: Vector2i) -> void:
 	d.collision_mask = 2
 	d.position = Vector2(tile_pos.x * TILE_SIZE + TILE_SIZE / 2, tile_pos.y * TILE_SIZE + TILE_SIZE / 2)
 
-	# Sprite
+	# Sprite - use stone texture for contrast against wood floor
 	var sprite := Sprite2D.new()
 	sprite.name = "Sprite2D"
-	var tex := load("res://assets/generated/tile_wood.png") as Texture2D
+	var tex := load("res://assets/generated/tile_stone.png") as Texture2D
 	if not tex:
-		# Fallback: try to find any wood-looking texture
-		tex = load("res://assets/generated/tile_roof.png") as Texture2D
+		tex = load("res://assets/generated/tile_wood.png") as Texture2D
 	if tex:
 		sprite.texture = tex
 		sprite.scale = Vector2(0.8, 0.8)
+		sprite.modulate = Color(0.85, 0.85, 0.9, 1.0)  # slight blue tint for stone barrel look
 	d.add_child(sprite)
 
 	# Collision

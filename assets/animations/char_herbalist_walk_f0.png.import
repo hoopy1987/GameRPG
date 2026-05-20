@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3oymrlrrx32e"
-path="res://.godot/imported/char_herbalist.png-96b703ce6ed661764cae898c5f865e09.ctex"
+uid="uid://b3tju5hqo7icp"
+path="res://.godot/imported/char_herbalist_walk_f0.png-f441a4ba1c724e150c33ccba02e831c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/generated/char_herbalist.png"
-dest_files=["res://.godot/imported/char_herbalist.png-96b703ce6ed661764cae898c5f865e09.ctex"]
+source_file="res://assets/animations/char_herbalist_walk_f0.png"
+dest_files=["res://.godot/imported/char_herbalist_walk_f0.png-f441a4ba1c724e150c33ccba02e831c3.ctex"]
 
 [params]
 

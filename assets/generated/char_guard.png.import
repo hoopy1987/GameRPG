@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://C2aLnf1d2x778"
-path="res://.godot/imported/char_guard.png-465c7de056204d638635da3bca8e23a3.ctex"
+uid="uid://7xlan3cfb45o"
+path="res://.godot/imported/char_guard.png-63e892a4b3a6619390efb36744a0827d.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_guard.png"
-dest_files=["res://.godot/imported/char_guard.png-465c7de056204d638635da3bca8e23a3.ctex"]
+dest_files=["res://.godot/imported/char_guard.png-63e892a4b3a6619390efb36744a0827d.ctex"]
 
 [params]
 

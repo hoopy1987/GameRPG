@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4yoqPLGlsQ6mQ"
-path="res://.godot/imported/char_scholar.png-8ae6f30a0ce246b8b9f1cbabd23095c0.ctex"
+uid="uid://dhst84ut4thkj"
+path="res://.godot/imported/char_scholar.png-c3b0425403e26501792ea50737cb6902.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_scholar.png"
-dest_files=["res://.godot/imported/char_scholar.png-8ae6f30a0ce246b8b9f1cbabd23095c0.ctex"]
+dest_files=["res://.godot/imported/char_scholar.png-c3b0425403e26501792ea50737cb6902.ctex"]
 
 [params]
 

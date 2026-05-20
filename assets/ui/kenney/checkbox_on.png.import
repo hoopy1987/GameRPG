@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3oymrlrrx32e"
-path="res://.godot/imported/char_herbalist.png-96b703ce6ed661764cae898c5f865e09.ctex"
+uid="uid://itl3b2j7462x"
+path="res://.godot/imported/checkbox_on.png-6f31146c4084c9acedb596e9b3fa1341.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/generated/char_herbalist.png"
-dest_files=["res://.godot/imported/char_herbalist.png-96b703ce6ed661764cae898c5f865e09.ctex"]
+source_file="res://assets/ui/kenney/checkbox_on.png"
+dest_files=["res://.godot/imported/checkbox_on.png-6f31146c4084c9acedb596e9b3fa1341.ctex"]
 
 [params]
 

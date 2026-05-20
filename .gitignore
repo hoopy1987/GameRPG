@@ -24,3 +24,6 @@ Thumbs.db
 
 # OS
 *.lnk
+
+# Generated during import - can be regenerated
+assets/downloads/kenney_ui/**/*.import

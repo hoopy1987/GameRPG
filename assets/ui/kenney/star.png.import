@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3oymrlrrx32e"
-path="res://.godot/imported/char_herbalist.png-96b703ce6ed661764cae898c5f865e09.ctex"
+uid="uid://dsd10l7tnomm7"
+path="res://.godot/imported/star.png-195358e88657eaa73474de86df4637c9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/generated/char_herbalist.png"
-dest_files=["res://.godot/imported/char_herbalist.png-96b703ce6ed661764cae898c5f865e09.ctex"]
+source_file="res://assets/ui/kenney/star.png"
+dest_files=["res://.godot/imported/star.png-195358e88657eaa73474de86df4637c9.ctex"]
 
 [params]
 

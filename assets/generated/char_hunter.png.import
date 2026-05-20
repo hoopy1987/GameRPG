@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0vZmzyyB2YjtJ"
-path="res://.godot/imported/char_hunter.png-6c746c5a573447eb8606ba9ff54a66e9.ctex"
+uid="uid://ujjc4ax78c"
+path="res://.godot/imported/char_hunter.png-2986edb6d7a71abaf0104046db3df712.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_hunter.png"
-dest_files=["res://.godot/imported/char_hunter.png-6c746c5a573447eb8606ba9ff54a66e9.ctex"]
+dest_files=["res://.godot/imported/char_hunter.png-2986edb6d7a71abaf0104046db3df712.ctex"]
 
 [params]
 

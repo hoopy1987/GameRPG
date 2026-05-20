@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://PojfKHScna1vK"
-path="res://.godot/imported/char_blacksmith.png-ac73d7bf97084e45b17f9a9f2e0bd4c3.ctex"
+uid="uid://v6xobck2tt2b"
+path="res://.godot/imported/char_blacksmith.png-10890d38fe4f7b239b34867a01b2e549.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_blacksmith.png"
-dest_files=["res://.godot/imported/char_blacksmith.png-ac73d7bf97084e45b17f9a9f2e0bd4c3.ctex"]
+dest_files=["res://.godot/imported/char_blacksmith.png-10890d38fe4f7b239b34867a01b2e549.ctex"]
 
 [params]
 

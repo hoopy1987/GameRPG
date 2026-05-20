@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://DcaYOsvA64WGH"
-path="res://.godot/imported/char_mayor.png-50c882d0163249d3bb747a4c06f5302b.ctex"
+uid="uid://nldtgvg6bpld"
+path="res://.godot/imported/char_mayor.png-011081a2a068c4a35eee3fd0884f3fec.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_mayor.png"
-dest_files=["res://.godot/imported/char_mayor.png-50c882d0163249d3bb747a4c06f5302b.ctex"]
+dest_files=["res://.godot/imported/char_mayor.png-011081a2a068c4a35eee3fd0884f3fec.ctex"]
 
 [params]
 
