@@ -867,28 +867,34 @@ func _test_compile_checks():
 
 # ========== 阶段17: 交互模拟测试 ==========
 func _test_interaction_simulation():
-	# 17.1 移动连通性
-	var movement_test = load("res://scripts/test_movement.gd").new()
-	movement_test.setup(_world, _player as CharacterBody2D, self, _log)
-	var movement_results = await movement_test.run_tests()
-	_tests_passed += movement_results.passed
-	_tests_failed += movement_results.failed
+	var modules := [
+		{"name": "movement", "path": "res://scripts/test_movement.gd"},
+		{"name": "interaction", "path": "res://scripts/test_interaction.gd"},
+		{"name": "combat", "path": "res://scripts/test_combat.gd"},
+	]
 	
-	# 17.2-17.3 交互系统
-	var interaction_test = load("res://scripts/test_interaction.gd").new()
-	interaction_test.setup(_world, _player as CharacterBody2D, self, _log)
-	var interaction_results = await interaction_test.run_tests()
-	_tests_passed += interaction_results.passed
-	_tests_failed += interaction_results.failed
-	
-	# 17.4 战斗系统
-	var combat_test = load("res://scripts/test_combat.gd").new()
-	combat_test.setup(_world, _player as CharacterBody2D, self, _log)
-	var combat_results = await combat_test.run_tests()
-	_tests_passed += combat_results.passed
-	_tests_failed += combat_results.failed
-	
-	_log("  阶段17统计: 移动%d项/交互%d项/战斗%d项" % [movement_results.passed + movement_results.failed, interaction_results.passed + interaction_results.failed, combat_results.passed + combat_results.failed])
+	for m in modules:
+		var scr = load(m.path)
+		if not scr:
+			_log("  ❌ 阶段17.%s: 无法加载 %s" % [m.name, m.path])
+			_tests_failed += 1
+			continue
+		if not scr.can_instantiate():
+			_log("  ❌ 阶段17.%s: %s 无法实例化（parse error？global_class_cache 过期？）" % [m.name, m.path])
+			_tests_failed += 1
+			continue
+		
+		var inst = scr.new()
+		if not inst:
+			_log("  ❌ 阶段17.%s: %s new() 返回 null" % [m.name, m.path])
+			_tests_failed += 1
+			continue
+		
+		inst.setup(_world, _player as CharacterBody2D, self, _log)
+		var results = await inst.run_tests()
+		_tests_passed += results.get("passed", 0)
+		_tests_failed += results.get("failed", 0)
+		_log("  阶段17.%s: 通过%d/失败%d" % [m.name, results.get("passed", 0), results.get("failed", 0)])
 
 # ========== 测试报告输出 ==========
 func _output_final_report():
