@@ -939,26 +939,86 @@ func _irregularize_roads() -> void:
 
 # ---------------------------------------------------------------------------
 # Collision generation for water, walls, trees
+# Optimized: groups adjacent tiles into larger rectangles
 # ---------------------------------------------------------------------------
 func _generate_tile_collision() -> void:
 	var obstacles := Node2D.new()
 	obstacles.name = "ObstacleCollisions"
 	add_child(obstacles)
 
+	# Collect all obstacle tiles
 	var used_cells := tile_map.get_used_cells()
+	var obstacle_cells: Array[Vector2i] = []
 	for cell_pos in used_cells:
 		var atlas := tile_map.get_cell_atlas_coords(cell_pos)
 		if atlas == WATER or atlas == WALL:
-			var body := StaticBody2D.new()
-			body.collision_layer = 1
-			body.collision_mask = 0
-			var shape := CollisionShape2D.new()
-			var rect := RectangleShape2D.new()
-			rect.size = Vector2(TILE_SIZE, TILE_SIZE)
-			shape.shape = rect
-			shape.position = Vector2(cell_pos.x * TILE_SIZE + TILE_SIZE / 2, cell_pos.y * TILE_SIZE + TILE_SIZE / 2)
-			body.add_child(shape)
-			obstacles.add_child(body)
+			obstacle_cells.append(cell_pos)
+	
+	# Group into rectangles using greedy algorithm
+	var rectangles := _group_cells_into_rectangles(obstacle_cells)
+	
+	# Create one StaticBody2D per rectangle
+	for rect in rectangles:
+		var body := StaticBody2D.new()
+		body.collision_layer = 1
+		body.collision_mask = 0
+		var shape := CollisionShape2D.new()
+		var box := RectangleShape2D.new()
+		box.size = Vector2(rect.size.x * TILE_SIZE, rect.size.y * TILE_SIZE)
+		shape.shape = box
+		shape.position = Vector2(
+			rect.position.x * TILE_SIZE + rect.size.x * TILE_SIZE / 2,
+			rect.position.y * TILE_SIZE + rect.size.y * TILE_SIZE / 2
+		)
+		body.add_child(shape)
+		obstacles.add_child(body)
+	
+	print("碰撞优化: %d格 → %d个矩形碰撞体" % [obstacle_cells.size(), rectangles.size()])
+
+# Greedy rectangle grouping: merge horizontally adjacent cells first, then vertically
+func _group_cells_into_rectangles(cells: Array[Vector2i]) -> Array[Dictionary]:
+	if cells.is_empty():
+		return []
+	
+	var remaining := cells.duplicate()
+	var rectangles: Array[Dictionary] = []
+	
+	while not remaining.is_empty():
+		var start: Vector2i = remaining[0]
+		remaining.remove_at(0)
+		
+		# Find max width (horizontal expansion)
+		var width := 1
+		while true:
+			var next := Vector2i(start.x + width, start.y)
+			if next in remaining:
+				remaining.erase(next)
+				width += 1
+			else:
+				break
+		
+		# Find max height (vertical expansion)
+		var height := 1
+		while true:
+			var can_expand := true
+			for dx in range(width):
+				var check := Vector2i(start.x + dx, start.y + height)
+				if not check in remaining:
+					can_expand = false
+					break
+			if can_expand:
+				for dx in range(width):
+					remaining.erase(Vector2i(start.x + dx, start.y + height))
+				height += 1
+			else:
+				break
+		
+		rectangles.append({
+			"position": Vector2i(start.x, start.y),
+			"size": Vector2i(width, height)
+		})
+	
+	return rectangles
 
 func _add_wall_collision(parent: Node, pos: Vector2, size: Vector2) -> void:
 	var body := StaticBody2D.new()
