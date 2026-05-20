@@ -871,16 +871,17 @@ func _add_destroyable(parent: Node, tile_pos: Vector2i) -> void:
 	d.collision_mask = 2
 	d.position = Vector2(tile_pos.x * TILE_SIZE + TILE_SIZE / 2, tile_pos.y * TILE_SIZE + TILE_SIZE / 2)
 
-	# Sprite - use stone texture for contrast against wood floor
+	# Sprite - use a procedurally generated texture to avoid missing asset dependencies
 	var sprite := Sprite2D.new()
 	sprite.name = "Sprite2D"
-	var tex := load("res://assets/generated/tile_stone.png") as Texture2D
-	if not tex:
-		tex = load("res://assets/generated/tile_wood.png") as Texture2D
-	if tex:
-		sprite.texture = tex
-		sprite.scale = Vector2(0.8, 0.8)
-		sprite.modulate = Color(0.85, 0.85, 0.9, 1.0)  # slight blue tint for stone barrel look
+	var tex := GradientTexture2D.new()
+	tex.gradient = Gradient.new()
+	tex.gradient.colors = [Color(0.6, 0.6, 0.65, 1.0), Color(0.5, 0.5, 0.55, 1.0)]
+	tex.width = 32
+	tex.height = 32
+	sprite.texture = tex
+	sprite.scale = Vector2(0.8, 0.8)
+	sprite.modulate = Color(0.85, 0.85, 0.9, 1.0)
 	d.add_child(sprite)
 
 	# Collision

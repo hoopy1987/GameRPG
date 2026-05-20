@@ -75,6 +75,9 @@ func _run_test_sequence():
 	_log("\n[阶段16] 编译与运行检查")
 	await _test_compile_checks()
 
+	_log("\n[阶段17] 交互模拟测试")
+	await _test_interaction_simulation()
+
 	# 输出最终报告
 	_output_final_report()
 
@@ -861,6 +864,15 @@ func _test_compile_checks():
 				_log("    ⚠️ %s 无子节点（初始化可能失败）" % child.name)
 				break
 	_assert("动态节点初始化成功", dynamic_ok, "动态节点数: %d" % dynamic_count)
+
+# ========== 阶段17: 交互模拟测试 ==========
+func _test_interaction_simulation():
+	var test_script = load("res://scripts/test_interaction.gd").new()
+	test_script.setup(_world, _player as CharacterBody2D, self, _log)
+	var results = await test_script.run_tests()
+	_tests_passed += results.passed
+	_tests_failed += results.failed
+	_log("  阶段17统计: 通过%d, 失败%d" % [results.passed, results.failed])
 
 # ========== 测试报告输出 ==========
 func _output_final_report():
