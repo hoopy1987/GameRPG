@@ -54,11 +54,13 @@ func _ready() -> void:
 		push_warning("Failed to load NPC texture: " + texture_path)
 
 func _load_texture_safe(path: String) -> Texture2D:
-	# Godot will auto-rebuild .ctex cache after .import valid=false fix
-	# Fallback no longer needed
 	var tex = load(path) as Texture2D
 	if tex == null:
-		push_warning("Failed to load texture: " + path)
+		var file := FileAccess.open(path, FileAccess.READ)
+		if file:
+			var img := Image.new()
+			img.load_png_from_buffer(file.get_buffer(file.get_length()))
+			tex = ImageTexture.create_from_image(img)
 	return tex
 
 func interact() -> void:
