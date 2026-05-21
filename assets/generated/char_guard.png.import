@@ -11,6 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_guard.png"
+valid=false
 dest_files=["res://.godot/imported/char_guard.png-63e892a4b3a6619390efb36744a0827d.ctex"]
 
 [params]

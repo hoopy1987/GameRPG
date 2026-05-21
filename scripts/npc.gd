@@ -54,26 +54,12 @@ func _ready() -> void:
 		push_warning("Failed to load NPC texture: " + texture_path)
 
 func _load_texture_safe(path: String) -> Texture2D:
-	# Check if a .ctex import cache exists for this file.
-	# If not, skip load() to avoid Godot's ERROR spam about missing .ctex.
-	var file_name: String = path.get_file()  # e.g. "char_mayor.png"
-	var imported_dir = DirAccess.open("res://.godot/imported/")
-	if imported_dir:
-		imported_dir.list_dir_begin()
-		var f: String = imported_dir.get_next()
-		while f != "":
-			if f.begins_with(file_name) and f.ends_with(".ctex"):
-				imported_dir.list_dir_end()
-				return load(path) as Texture2D
-			f = imported_dir.get_next()
-		imported_dir.list_dir_end()
-	
-	# No .ctex cache, use direct image loading
-	var img := Image.new()
-	var err := img.load(path)
-	if err == OK:
-		return ImageTexture.create_from_image(img)
-	return null
+	# Godot will auto-rebuild .ctex cache after .import valid=false fix
+	# Fallback no longer needed
+	var tex = load(path) as Texture2D
+	if tex == null:
+		push_warning("Failed to load texture: " + path)
+	return tex
 
 func interact() -> void:
 	if dialogue_lines.is_empty():

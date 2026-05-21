@@ -11,6 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/animations/char_herbalist_walk_f0.png"
+valid=false
 dest_files=["res://.godot/imported/char_herbalist_walk_f0.png-f441a4ba1c724e150c33ccba02e831c3.ctex"]
 
 [params]

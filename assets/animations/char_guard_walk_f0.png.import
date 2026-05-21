@@ -11,6 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/animations/char_guard_walk_f0.png"
+valid=false
 dest_files=["res://.godot/imported/char_guard_walk_f0.png-79a981c61230342f192705d3390ed0c1.ctex"]
 
 [params]

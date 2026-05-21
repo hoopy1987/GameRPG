@@ -11,6 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_mayor.png"
+valid=false
 dest_files=["res://.godot/imported/char_mayor.png-011081a2a068c4a35eee3fd0884f3fec.ctex"]
 
 [params]

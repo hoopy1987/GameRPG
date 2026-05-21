@@ -11,6 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/generated/char_farmer.png"
+valid=false
 dest_files=["res://.godot/imported/char_farmer.png-721247d6f5fb335c45a09184b760fc27.ctex"]
 
 [params]

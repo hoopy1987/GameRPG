@@ -11,6 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/animations/char_blacksmith_walk_f2.png"
+valid=false
 dest_files=["res://.godot/imported/char_blacksmith_walk_f2.png-9e69efa0549f8ca88c6399374cf92264.ctex"]
 
 [params]
